@@ -11,12 +11,8 @@ export interface SearchArticleQuery {
   topic?: string;
   page?: number;
   page_size?: number;
-  search_type?: SearchArticleQueryType;
+  sort_field?: string;
+  sort_dir?: "asc" | "desc";
+  search_type?: "text" | "semantic" | "combined";
   return_attributes?: string[];
-}
-
-export enum SearchArticleQueryType {
-  text,
-  semantic,
-  combined,
 }
