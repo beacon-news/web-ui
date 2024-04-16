@@ -1,13 +1,13 @@
 export interface FeedArticleResult {
-  id: string;
-  categories: { [key: string]: any }[];
+  id?: string;
+  categories?: ArticleCategory[];
   entities: string[];
-  topics: { [key: string]: any }[] | undefined;
+  topics?: ArticleTopic[];
   url: string;
   publish_date: Date;
-  source: string | undefined;
-  image: string | undefined;
-  author: string | undefined;
+  source?: string;
+  image?: string;
+  author?: string;
   title: string;
   paragraphs: string[];
 }
@@ -16,3 +16,14 @@ export interface FeedArticleResults {
   total: number;
   results: FeedArticleResult[];
 }
+
+export interface ArticleCategory {
+  id: string;
+  name: string;
+}
+
+export interface ArticleTopic {
+  id: string;
+  topic: string;
+}
+

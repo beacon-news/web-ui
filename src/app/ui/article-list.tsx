@@ -1,52 +1,43 @@
 "use client";
 
 import ArticleCard from "@/app/ui/article-card";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FeedArticleResult } from "../lib/models/feed-article";
-import getFeed from "../lib/service/feed";
-import { SearchArticleQuery } from "../lib/models/article-query";
-import searchArticles from "../lib/service/search";
-import SearchBar from "./search-input";
-import { useDebouncedCallback } from "use-debounce";
+import { useInView } from "react-intersection-observer";
 
 
-export default function ArticleList({ articleResults } : { articleResults: FeedArticleResult[] }) {
+export default function ArticleList({ 
+  articleResults, 
+  onListEndReached,
+ } : { 
+  articleResults: FeedArticleResult[],
+  onListEndReached: () => void,
+}) {
   
-  // the next page to fetch is 1, the first page is 0, and has already been fetched
-  const [pageToFetch, setPageToFetch] = useState(1);
-  const [articleResultsList, setArticleResults] = useState<FeedArticleResult[]>(articleResults)
+  const {ref, inView} = useInView();
 
-  const loadMoreArticles = async () => {
-    const results = await getFeed(pageToFetch) 
-    setArticleResults([...articleResultsList, ...results.results]);
-    setPageToFetch(pageToFetch + 1);
-  }
-
-  const loadSearchedArticles = useDebouncedCallback(
-    async (searchQuery: string) =>{
-      const articleQuery: SearchArticleQuery = {
-        query: searchQuery,
-        page: 0,
-        page_size: 10,
-      };
-      const results = await searchArticles(articleQuery);
-      setArticleResults([...results.results]);
-      setPageToFetch(1);
-    }, 
-    1000
-  );
+  useEffect(() => {
+    if (inView) {
+      onListEndReached();
+    }
+  }, [inView])
   
   return (
-    <div>
-      <SearchBar setQuery={loadSearchedArticles} />
-      <div className="gap-8 columns-3">
-        {articleResultsList.map((article) => (
-          <div key={article.id} className="mt-4">
-            <ArticleCard article={article} />
-          </div>
-        ))}
-        <button onClick={loadMoreArticles}>Load More</button>
+    <div className="flex flex-col justify-center">
+    {articleResults.length > 0 ?
+      <div>
+        <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 grid-flow-row grid-align-center">
+          {articleResults.map((article) => (
+            <div key={article.id} className="mt-4">
+              <ArticleCard article={article} />
+            </div>
+          ))}
+        </div>
+        <div ref={ref}>Loading</div>
       </div>
+      :
+      <div className="p-12 text-center">No articles found.</div>
+    }
     </div>
   );
 }
