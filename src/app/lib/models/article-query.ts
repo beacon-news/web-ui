@@ -12,7 +12,10 @@ export interface SearchArticleQuery {
   page?: number;
   page_size?: number;
   sort_field?: string;
-  sort_dir?: "asc" | "desc";
-  search_type?: "text" | "semantic" | "combined";
+  sort_dir?: SortDirection,
+  search_type?: SearchType;
   return_attributes?: string[];
 }
+
+export type SortDirection = "asc" | "desc";
+export type SearchType = "text" | "semantic" | "combined";

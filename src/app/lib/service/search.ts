@@ -1,6 +1,6 @@
 import { SEARCH_API_URL } from "../../config";
 import { SearchArticleQuery } from "../models/article-query";
-import { FeedArticleResults } from "../models/feed-article";
+import { FeedArticleResult, FeedArticleResults } from "../models/feed-article";
 
 
 export default async function searchArticles(query: SearchArticleQuery): Promise<FeedArticleResults> {
@@ -17,6 +17,14 @@ export default async function searchArticles(query: SearchArticleQuery): Promise
   }
 
   const results = await res.json() as FeedArticleResults;
+
+  results.results = results.results.map((articleObj) => {
+    return {
+      ...articleObj,
+      publish_date: new Date(articleObj.publish_date),
+    } as FeedArticleResult;
+  })
+
   // console.log(results);
   
   console.log(`got ${results.results.length} articles, total ${results.total}`)

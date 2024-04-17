@@ -1,10 +1,73 @@
+"use client";
 
-export default function Tags({texts} : {texts: string[]}) {
+import { useState } from "react";
+
+export default function Tags({
+  texts, 
+  selected = undefined,
+  onToggled = undefined,
+} : {
+  texts: string[],
+  selected: boolean[] | undefined,
+  onToggled: ((index: number, text: string, toggled: boolean) => void) | undefined,
+}) {
+
   return (
-    <div className="text-sm text-gray-600 flex flex-row">
-      {texts.map(text => (
-        <p className="bg-slate-300 text-sm px-2 py-1 m-2 rounded-md">{text}</p>
+    <div className="flex flex-row gap-3 flex-wrap">
+      {texts.map((text, index) => (
+        <Tag text={text} key={index} selected={selected?.[index]} onToggled={(toggled) => onToggled?.(index, text, toggled)} />
+        // <p 
+        // key={index} 
+        // className={`text-sm text-gray-600 bg-slate-300 px-2 py-1 rounded-md 
+        // ${onToggled !== undefined ? "hover:cursor-pointer hover:bg-teal-800 hover:text-white" : ""}`} 
+        // onClick={() => onToggled?.(index, text)}>{text}</p>
       ))}
     </div> 
   )
 };
+
+export function Tag({
+  text,
+  selected = false,
+  onToggled = () => {},
+} : {
+  text: string,
+  selected?: boolean,
+  onToggled?: (toggled: boolean) => void,
+}) {
+
+  return (
+    <p 
+    className={`text-sm ${selected ? "bg-teal-800 text-white" : "text-gray-600 bg-slate-300"}
+    px-2 py-1 rounded-md 
+    hover:cursor-pointer hover:bg-teal-800 hover:text-white hover:opacity-90`} 
+    onClick={
+      () => {
+        onToggled(!selected)
+      }
+    }>{text}</p>
+  );
+}
+
+// export function ClickableTags({
+//   texts, 
+//   onClick = () => {},
+// } : {
+//   texts: string[],
+//   onClick: (index: number, text: string) => void,
+// }) {
+
+//   const clickable = (index: number) => onClickCallbacks[index];
+
+//   return (
+//     <div className="flex flex-row gap-3 flex-wrap">
+//       {texts.map((text, index) => (
+//         <p 
+//         key={index} 
+//         className={`text-sm text-gray-600 bg-slate-300 px-2 py-1 rounded-md 
+//         ${clickable(index) ? "hover:cursor-pointer hover:bg-teal-800 hover:text-white" : ""}`} 
+//         onClick={() => onClick(index, text)}>{text}</p>
+//       ))}
+//     </div> 
+//   )
+// };

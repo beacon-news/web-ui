@@ -11,7 +11,7 @@ export default function ArticleCard({ article } : { article: FeedArticleResult }
     window.open(article.url, '_blank');
   }
 
-  const [detailsOpen, setDetailsOpen] = useState(false);
+  const [detailsOpen, setDetailsOpen] = useState(true);
 
   const detailsPresent = () => {
     return (article.categories && article.categories.length > 0) || (article.topics && article.topics.length > 0);

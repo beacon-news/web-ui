@@ -1,3 +1,5 @@
+// TODO: change publish_date to camelCase and create a DTO for the snake_case json?
+
 export interface FeedArticleResult {
   id?: string;
   categories?: ArticleCategory[];

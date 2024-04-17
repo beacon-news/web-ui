@@ -8,7 +8,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
         <div>Articles</div>
         <div>Topics</div>
       </nav>
-      <main className="w-full mx-auto max-w-5xl px-4 py-2">
+      <main className="w-full h-full mx-auto max-w-5xl px-4 py-2">
         {children}
       </main>
     </div>

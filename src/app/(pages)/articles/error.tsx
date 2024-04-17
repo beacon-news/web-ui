@@ -1,5 +1,5 @@
 "use client";
-import { useRouter } from 'next/router';
+
 import React, { useEffect } from 'react';
 
 export default function ErrorComponent({ 
@@ -11,16 +11,14 @@ export default function ErrorComponent({
     console.error(error);
   }, [error]);
 
-  const router = useRouter();
-
   const retry = () => {
-    router.reload(); 
+    window.location.reload();
   }
 
   return (
     <div className="flex flex-col items-center justify-center h-full">
-      <p className="text-lg text-gray-800">Something went wrong</p>
-      <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md" onClick={retry}>Retry</button>
+      <p className="text-lg text-gray-800 mb-2">Something went wrong...</p>
+      <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 hover:cursor-pointer" onClick={retry}>Refresh</button>
     </div>
   );
 }
