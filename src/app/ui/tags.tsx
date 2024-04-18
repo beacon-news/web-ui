@@ -38,8 +38,8 @@ export function Tag({
 
   return (
     <p 
-    className={`text-sm ${selected ? "bg-teal-800 text-white" : "text-gray-600 bg-slate-300"}
-    px-2 py-1 rounded-md 
+    className={`text-sm ${selected ? "bg-teal-800 text-white outline-teal-900" : "text-gray-600 bg-slate-300"}
+    px-2 py-1 rounded-md
     hover:cursor-pointer hover:bg-teal-800 hover:text-white hover:opacity-90`} 
     onClick={
       () => {

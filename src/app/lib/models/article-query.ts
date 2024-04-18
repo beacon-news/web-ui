@@ -1,4 +1,4 @@
-export interface SearchArticleQuery {
+export interface ArticleQuery {
   ids?: string[];
   query?: string;
   category_ids?: string[];
@@ -11,7 +11,7 @@ export interface SearchArticleQuery {
   topic?: string;
   page?: number;
   page_size?: number;
-  sort_field?: string;
+  sort_field?: "publish_date";
   sort_dir?: SortDirection,
   search_type?: SearchType;
   return_attributes?: string[];

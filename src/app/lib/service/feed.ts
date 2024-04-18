@@ -1,11 +1,11 @@
 import { SEARCH_API_URL } from "../../config";
-import { SearchArticleQuery } from "../models/article-query";
+import { ArticleQuery } from "../models/article-query";
 import { FeedArticleResults } from "../models/feed-article";
 
 
 export default async function getFeed(page: number = 0, pageSize: number = 10): Promise<FeedArticleResults> {
 
-  const feedQuery: SearchArticleQuery = {
+  const feedQuery: ArticleQuery = {
     page: page,
     page_size: pageSize,
   }
