@@ -1,6 +1,6 @@
 // TODO: change publish_date to camelCase and create a DTO for the snake_case json?
 
-export interface FeedArticleResult {
+export interface ArticleResult {
   id?: string;
   categories?: ArticleCategory[];
   entities: string[];
@@ -14,9 +14,9 @@ export interface FeedArticleResult {
   paragraphs: string[];
 }
 
-export interface FeedArticleResults {
+export interface ArticleResults {
   total: number;
-  results: FeedArticleResult[];
+  results: ArticleResult[];
 }
 
 export interface ArticleCategory {

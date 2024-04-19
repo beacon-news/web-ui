@@ -2,7 +2,7 @@
 
 import ArticleCard from "@/app/ui/article-card";
 import { useEffect} from "react";
-import { FeedArticleResult } from "../lib/models/feed-article";
+import { ArticleResult } from "../lib/models/feed-article";
 import { useInView } from "react-intersection-observer";
 import Spinner from "./spinner";
 
@@ -11,10 +11,14 @@ export default function ArticleList({
   articleResults, 
   moreArticlesPresent,
   onListEndReached,
+  onCategoryClicked,
+  onTopicClicked,
  } : { 
-  articleResults: FeedArticleResult[],
+  articleResults: ArticleResult[],
   moreArticlesPresent: boolean,
   onListEndReached: () => void,
+  onCategoryClicked: (category: string) => void,
+  onTopicClicked: (topic: string) => void,
 }) {
   
   const {ref, inView} = useInView();
@@ -33,7 +37,11 @@ export default function ArticleList({
         <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 grid-flow-row grid-align-center">
           {articleResults.map((article) => (
             <div key={article.id} className="mt-4">
-              <ArticleCard article={article} />
+              <ArticleCard 
+                article={article} 
+                onCategoryClicked={onCategoryClicked}
+                onTopicClicked={onTopicClicked}
+              />
             </div>
           ))}
         </div>

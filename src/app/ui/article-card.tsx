@@ -2,10 +2,23 @@
 "use client";
 
 import React, { useState } from 'react';
-import { FeedArticleResult } from '../lib/models/feed-article';
+import { ArticleResult } from '../lib/models/feed-article';
 import Tags from './tags';
+import { useRouter } from 'next/navigation';
+import { ArticleQuery } from '../lib/models/article-query';
 
-export default function ArticleCard({ article } : { article: FeedArticleResult }) {
+export default function ArticleCard(
+{ 
+  article,
+  onCategoryClicked,
+  onTopicClicked,
+} : { 
+  article: ArticleResult,
+  onCategoryClicked: (category: string) => void,
+  onTopicClicked: (topic: string) => void,
+}) {
+
+  const router = useRouter();
 
   const openArticle = () => {
     window.open(article.url, '_blank');
@@ -27,19 +40,27 @@ export default function ArticleCard({ article } : { article: FeedArticleResult }
   }
 
   const renderCategories = () => {
-   return ( 
-    <div>
-      <p className="text-sm text-gray-600">Categories:</p>
-      <Tags texts={article.categories!.map(category => category.name)}></Tags>
-    </div> 
-   );
+    return ( 
+      <div>
+        <p className="text-sm text-gray-600">Categories:</p>
+        <Tags 
+          texts={article.categories!.map(category => category.name)}
+          selected={article.categories!.map(_ => false)}
+          onToggled={(index, text, toggled) => onCategoryClicked(text)}
+        />
+      </div> 
+    );
   }
 
   const renderTopics = () => {
    return ( 
     <div className="mt-2">
       <p className="text-sm text-gray-600">Topics:</p>
-      <Tags texts={article.topics!.map(topic => topic.topic)}></Tags>
+      <Tags 
+        texts={article.topics!.map(topic => topic.topic)}
+        selected={article.topics!.map(_ => false)}
+        onToggled={(index, text, toggled) => onTopicClicked(text)}
+      />
     </div> 
    );
   }

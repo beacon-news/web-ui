@@ -7,26 +7,13 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 
-// TODO: fetch categories
-const cats = [
-  "world",
-  "business",
-  "entertainment",
-  "health",
-  "science",
-  "sports",
-  "technology",
-  "politics",
-  "art",
-];
-
-
-
 export default function SearchBar({
+  categories,
   articleQuery,
   setArticleQuery,
   onSearchPressed,
 }: { 
+  categories: string[],
   articleQuery: ArticleQuery,
   setArticleQuery: (query: ArticleQuery) => void,
   onSearchPressed: () => void,
@@ -34,13 +21,29 @@ export default function SearchBar({
 
   const [optionsOpen, setOptionsOpen] = useState<boolean>(false);
 
-  const [categories, setCategories] = useState(() => {
+  const [chosenCategories, setChosenCategories] = useState(() => {
+    // initialize categories with the ones from the parent
     const opts: { [key: string]: boolean } = {};
-    for (const cat of cats) {
+    for (const cat of categories) {
       opts[cat] = false;
     }
     return opts
   })
+
+  // update chosen categories with the ones coming from the parent
+  // TODO: redundant a bit, because chosenCategories also gets updated when the input changes
+  useEffect(() => {
+    const newChosenCategories = {...chosenCategories};
+    for (const cat of articleQuery.categories?.split(' ') ?? []) {
+      newChosenCategories[cat] = true;
+    }
+    setChosenCategories(newChosenCategories);
+  }, [articleQuery.categories]);
+
+  // update topic with the one coming from the parent
+  useEffect(() => {
+    articleQuery.topic && setTopic(articleQuery.topic);
+  }, [articleQuery.topic]);
 
   const setQuery = (queryString: string) => {
     const newArticleQuery = {
@@ -70,21 +73,26 @@ export default function SearchBar({
   const toggleCategory = (category: string, toggled: boolean) => {
     // update categories object for the tags
     const newCategories = {
-      ...categories,
+      ...chosenCategories,
       [category]: toggled,
     };
-    setCategories(newCategories);
+    // chosenCategories will also be updated via the parent, a bit redundant...
+    setChosenCategories(newCategories);
 
-    // update the query object
+    // update the query 
     const catString = Object.keys(newCategories)
       .filter(key => newCategories[key] == true)
       .join(' ');
 
-    setArticleQuery({
+    const newArticleQuery: ArticleQuery = {
       ...articleQuery,
       categories: catString,
       page: 0,
-    })
+    }
+    if (catString === '') {
+      delete newArticleQuery.categories;
+    }
+    setArticleQuery(newArticleQuery);
   }
 
   const setTopic = (topic: string) => {
@@ -167,11 +175,11 @@ export default function SearchBar({
           <div className="flex gap-2 flex-wrap">
             <p className="text-sm text-gray-600">Categories: </p>
             <div className="flex flex-row gap-3 flex-wrap">
-              {cats.map((cat, index) => (
+              {categories.map((cat, index) => (
                 <Tag 
                   text={cat} 
                   key={index} 
-                  selected={categories[cat]} 
+                  selected={chosenCategories[cat]} 
                   onToggled={(toggled) => toggleCategory(cat, toggled)}
                 />
               ))}
@@ -181,6 +189,7 @@ export default function SearchBar({
           {/* topic */}
           <SearchOptionTextInput
             placeholder="Topic (market inflation billion dow ...)"
+            defaultValue={articleQuery.topic}
             onChange={e => setTopic(e.target.value)}
           />
 
@@ -225,20 +234,23 @@ export default function SearchBar({
               articleQuery.query === undefined || articleQuery.query.trim() === "" ?
               <p className="text-sm text-gray-600 text-center">Enter a search query in order to use semantic search.</p>
               :
-              <div className="flex items-center gap-1">
-                <label htmlFor="semantic-search-toggle"
-                  className="text-sm text-gray-600 px-2 py-2">
-                  Use semantic search
-                </label>
-                <input
-                  id="semantic-search-toggle"
-                  type="checkbox"
-                  className="w-4 h-4"
-                  placeholder="Semantic Search Toggle"
-                  disabled={articleQuery.query === undefined || articleQuery.query.trim() === ""}
-                  defaultChecked={articleQuery.search_type === "combined"}
-                  onChange={(e) => setUseSemanticSearch(e.target.checked)}
-                />
+              <div>
+                <div className="flex items-center justify-center gap-1">
+                  <label htmlFor="semantic-search-toggle"
+                    className="text-sm text-gray-600 px-2 py-2">
+                    Use semantic search
+                  </label>
+                  <input
+                    id="semantic-search-toggle"
+                    type="checkbox"
+                    className="w-4 h-4"
+                    placeholder="Semantic Search Toggle"
+                    disabled={articleQuery.query === undefined || articleQuery.query.trim() === ""}
+                    defaultChecked={articleQuery.search_type === "combined"}
+                    onChange={(e) => setUseSemanticSearch(e.target.checked)}
+                  />
+                </div>
+                <p className="text-xs text-gray-600">Note that only the top results will be shown.</p>
               </div>
             }
           </div>

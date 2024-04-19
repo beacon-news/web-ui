@@ -1,18 +1,30 @@
 "use client";
 import { ArticleQuery } from "@/app/lib/models/article-query";
-import { FeedArticleResults } from "@/app/lib/models/feed-article";
-import getFeed from "@/app/lib/service/feed"
-import searchArticles from "@/app/lib/service/search";
+import { ArticleResults } from "@/app/lib/models/feed-article";
+import searchArticles from "@/app/lib/service/article-search";
 import ArticleList from "@/app/ui/article-list";
 import SearchBar from "@/app/ui/search-input";
 import { Suspense, useCallback, useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
+import fetchCategories from "@/app/lib/service/category-search";
+import { CategoryResults } from "@/app/lib/models/category";
+import { useRouter } from "next/navigation";
 
 
 export default function Page() {
-  // const articleResults = await getFeed();
 
-  const [articleResults, setArticleResults] = useState<FeedArticleResults>({
+  const [categoryResults, setCategoryResults] = useState<CategoryResults>({
+    total: 0,
+    results: [], 
+  });
+
+  useEffect(() => {
+    (async () => {
+      setCategoryResults(await fetchCategories());
+    })();
+  }, []);
+
+  const [articleResults, setArticleResults] = useState<ArticleResults>({
     total: 0,
     results: [],
   });
@@ -20,14 +32,27 @@ export default function Page() {
   // start at -1 so incrementing it when encountering the end of the list gives page '0', the first page to fetch
   const [articleQuery, setArticleQuery] = useState<ArticleQuery>({
     page: -1,
-    page_size: 10,
+    page_size: 20,
   });
+
+  // TODO: build query from URL params 
+  const router = useRouter();
+
+  useEffect(() => {
+    const params = new URLSearchParams(articleQuery as Record<string, string>);
+
+    const path = `/articles?${params.toString()}`;
+    console.log(path);
+
+    const fromPath = new URLSearchParams(path);
+    console.log(fromPath);
+  }, [articleQuery]);
 
   const [moreCanBeFetched, setMoreCanBeFetched] = useState(true);
 
   const searchWithQuery = useCallback(
     useDebouncedCallback(
-      async (prevArticleResults: FeedArticleResults, query: ArticleQuery) => {
+      async (prevArticleResults: ArticleResults, query: ArticleQuery) => {
 
         if (
           // there is nothing more to load
@@ -83,7 +108,7 @@ export default function Page() {
   }
 
   const loadMoreArticles = () => {
-    const newQuery = {
+    const newQuery: ArticleQuery = {
       ...articleQuery,
       page: articleQuery.page === undefined ? 0 : articleQuery.page + 1,
     };
@@ -91,9 +116,29 @@ export default function Page() {
     searchWithQuery(articleResults, newQuery);
   }
 
+  const onCategoryClicked = (text: string) => {
+    const newQuery: ArticleQuery = {
+      ...articleQuery,
+      categories: text,
+    };
+    setArticleQuery(newQuery);
+    searchWithQuery(articleResults, newQuery);
+  }
+
+  const onTopicClicked = (text: string) => {
+    const newQuery: ArticleQuery = {
+      ...articleQuery,
+      topic: text,
+    };
+    setArticleQuery(newQuery);
+    searchWithQuery(articleResults, newQuery);
+  }
+
+
   return (
     <div className="w-full flex flex-col items-center">
       <SearchBar
+        categories={categoryResults.results.map(cat => cat.name).sort()}
         articleQuery={articleQuery}
         setArticleQuery={setArticleQueryAndSearch}
         onSearchPressed={() => { searchWithQuery(articleResults, articleQuery); }}
@@ -102,10 +147,9 @@ export default function Page() {
         articleResults={articleResults.results} 
         moreArticlesPresent={moreCanBeFetched} 
         onListEndReached={loadMoreArticles}
+        onCategoryClicked={onCategoryClicked}
+        onTopicClicked={onTopicClicked}
       />
-      {/* <Suspense fallback={<div>Loading...</div>}>
-        <ArticleList articleResults={articles.results} />
-      </Suspense> */}
     </div>
   );
 }

@@ -1,10 +1,9 @@
 import { SEARCH_API_URL } from "../../config";
 import { ArticleQuery } from "../models/article-query";
-import { FeedArticleResult, FeedArticleResults } from "../models/feed-article";
+import { ArticleResult, ArticleResults } from "../models/feed-article";
 
-export class SearchError extends Error {}
 
-export default async function searchArticles(query: ArticleQuery): Promise<FeedArticleResults> {
+export default async function searchArticles(query: ArticleQuery): Promise<ArticleResults> {
 
   const params = new URLSearchParams(query as Record<string, string>);
 
@@ -14,16 +13,16 @@ export default async function searchArticles(query: ArticleQuery): Promise<FeedA
 
   if (!res.ok) {
     console.error(res.body);
-    throw new SearchError("Failed to fetch articles...");
+    throw new Error("Failed to fetch articles...");
   }
 
-  const results = await res.json() as FeedArticleResults;
+  const results = await res.json() as ArticleResults;
 
   results.results = results.results.map((articleObj) => {
     return {
       ...articleObj,
       publish_date: new Date(articleObj.publish_date),
-    } as FeedArticleResult;
+    } as ArticleResult;
   })
 
   console.log(`got ${results.results.length} articles, total ${results.total}`)

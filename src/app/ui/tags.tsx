@@ -48,26 +48,3 @@ export function Tag({
     }>{text}</p>
   );
 }
-
-// export function ClickableTags({
-//   texts, 
-//   onClick = () => {},
-// } : {
-//   texts: string[],
-//   onClick: (index: number, text: string) => void,
-// }) {
-
-//   const clickable = (index: number) => onClickCallbacks[index];
-
-//   return (
-//     <div className="flex flex-row gap-3 flex-wrap">
-//       {texts.map((text, index) => (
-//         <p 
-//         key={index} 
-//         className={`text-sm text-gray-600 bg-slate-300 px-2 py-1 rounded-md 
-//         ${clickable(index) ? "hover:cursor-pointer hover:bg-teal-800 hover:text-white" : ""}`} 
-//         onClick={() => onClick(index, text)}>{text}</p>
-//       ))}
-//     </div> 
-//   )
-// };
