@@ -1,6 +1,6 @@
 import { SEARCH_API_URL } from "../../config";
 import { ArticleQuery } from "../models/article-query";
-import { ArticleResult, ArticleResults } from "../models/feed-article";
+import { ArticleResult, ArticleResults } from "../models/article";
 
 
 export default async function searchArticles(query: ArticleQuery): Promise<ArticleResults> {

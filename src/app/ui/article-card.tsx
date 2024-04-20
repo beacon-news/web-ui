@@ -2,10 +2,11 @@
 "use client";
 
 import React, { useState } from 'react';
-import { ArticleResult } from '../lib/models/feed-article';
+import { ArticleResult } from '../lib/models/article';
 import Tags from './tags';
 import { useRouter } from 'next/navigation';
 import { ArticleQuery } from '../lib/models/article-query';
+import { ChevronDown, ChevronUp } from './chevrons';
 
 export default function ArticleCard(
 { 
@@ -99,22 +100,18 @@ export default function ArticleCard(
           {detailsOpen && renderDetails()}
         </div>
       </div>
-      {detailsPresent() && 
-        <div className="mt-2 w-full text-center">
-          <svg xmlns="http://www.w3.org/2000/svg" 
+      {detailsPresent() &&
+        (detailsOpen ?
+        <ChevronUp
           className="h-7 w-full text-gray-400 rounded-b-md bg-gray-200 hover:bg-blue-600 hover:cursor-pointer hover:text-white" 
-          fill="none" viewBox="0 0 24 24" stroke="currentColor"
           onClick={() => setDetailsOpen(!detailsOpen)}
-          >
-            {detailsOpen ? 
-            // upwards chevron
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" /> 
-            :
-            // downwards chevron
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            }
-          </svg>
-        </div>
+        />
+        :
+        <ChevronDown
+          className="h-7 w-full text-gray-400 rounded-b-md bg-gray-200 hover:bg-blue-600 hover:cursor-pointer hover:text-white" 
+          onClick={() => setDetailsOpen(!detailsOpen)}
+        />
+        )
       }
     </div>
   );

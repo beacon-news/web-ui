@@ -1,9 +1,9 @@
 "use client";
 import { ArticleQuery } from "@/app/lib/models/article-query";
-import { ArticleResults } from "@/app/lib/models/feed-article";
+import { ArticleResults } from "@/app/lib/models/article";
 import searchArticles from "@/app/lib/service/article-search";
 import ArticleList from "@/app/ui/article-list";
-import SearchBar from "@/app/ui/search-input";
+import ArticleSearchBar from "@/app/ui/article-search-bar";
 import { Suspense, useCallback, useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import fetchCategories from "@/app/lib/service/category-search";
@@ -137,7 +137,7 @@ export default function Page() {
 
   return (
     <div className="w-full flex flex-col items-center">
-      <SearchBar
+      <ArticleSearchBar
         categories={categoryResults.results.map(cat => cat.name).sort()}
         articleQuery={articleQuery}
         setArticleQuery={setArticleQueryAndSearch}

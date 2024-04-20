@@ -19,7 +19,7 @@ async function searchCategories(query: CategoryQuery): Promise<CategoryResults> 
 
   if (!res.ok) {
     console.error(res.body);
-    throw new Error("Failed to fetch articles...");
+    throw new Error("Failed to fetch categories...");
   }
 
   const results = await res.json() as CategoryResults;

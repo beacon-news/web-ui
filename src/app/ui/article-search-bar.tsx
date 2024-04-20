@@ -7,7 +7,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 
-export default function SearchBar({
+export default function ArticleSearchBar({
   categories,
   articleQuery,
   setArticleQuery,

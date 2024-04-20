@@ -2,9 +2,10 @@
 
 import ArticleCard from "@/app/ui/article-card";
 import { useEffect} from "react";
-import { ArticleResult } from "../lib/models/feed-article";
+import { ArticleResult } from "../lib/models/article";
 import { useInView } from "react-intersection-observer";
 import Spinner from "./spinner";
+import { ScrollToTop } from "./scroll-to-top";
 
 
 export default function ArticleList({ 
@@ -34,17 +35,20 @@ export default function ArticleList({
 
       {/* show the articles */}
       {articleResults.length > 0 &&
-        <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 grid-flow-row grid-align-center">
-          {articleResults.map((article) => (
-            <div key={article.id} className="mt-4">
-              <ArticleCard 
-                article={article} 
-                onCategoryClicked={onCategoryClicked}
-                onTopicClicked={onTopicClicked}
-              />
-            </div>
-          ))}
-        </div>
+        <>
+          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 grid-flow-row grid-align-center">
+            {articleResults.map((article) => (
+              <div key={article.id} className="mt-4">
+                <ArticleCard 
+                  article={article} 
+                  onCategoryClicked={onCategoryClicked}
+                  onTopicClicked={onTopicClicked}
+                />
+              </div>
+            ))}
+          </div>
+          <ScrollToTop />
+        </>
       }
 
       {/* show loading element if there are more articles to load */}

@@ -1,0 +1,103 @@
+"use client";
+import { ArticleQuery } from "@/app/lib/models/article-query";
+import searchArticles from "@/app/lib/service/article-search";
+import ArticleList from "@/app/ui/article-list";
+import { Suspense, useCallback, useEffect, useState } from "react";
+import { useDebouncedCallback } from "use-debounce";
+import fetchCategories from "@/app/lib/service/category-search";
+import { CategoryResults } from "@/app/lib/models/category";
+import { useRouter } from "next/navigation";
+import { TopicQuery } from "@/app/lib/models/topic-query";
+import { TopicResults } from "@/app/lib/models/topic";
+import searchTopics from "@/app/lib/service/topic-search";
+import TopicSearchBar from "@/app/ui/topic-search-bar";
+import TopicList from "@/app/ui/topic-list";
+
+
+export default function Page() {
+
+  const [topicResults, setTopicResults] = useState<TopicResults>({
+    total: 0,
+    results: [],
+  });
+
+  // start at -1 so incrementing it when encountering the end of the list gives page '0', the first page to fetch
+  const [topicQuery, setTopicQuery] = useState<TopicQuery>({
+    page: -1,
+    page_size: 20,
+  });
+
+  const [moreCanBeFetched, setMoreCanBeFetched] = useState(true);
+
+  const searchWithQuery = useCallback(
+    useDebouncedCallback(
+      async (prevTopicResults: TopicResults, query: TopicQuery) => {
+
+        if (prevTopicResults.total < query.page! * query.page_size!) {
+          // there is nothing more to load
+          setMoreCanBeFetched(false);
+          return;
+        }
+
+        try {
+          const fetched = await searchTopics(query); 
+
+          if (query.page && query.page > 0) {
+            // append the articles
+            setTopicResults({
+              total: fetched.total,
+              results: [...prevTopicResults.results, ...fetched.results],
+            });
+          } else {
+            // replace the topics
+            setTopicResults(fetched);
+          } 
+          setMoreCanBeFetched(true);
+
+        } catch (error) {
+          // TODO: set error handling, propagate it up
+          throw error;
+        }
+    },
+    800,
+  ), []);
+
+  // fetch topics on load
+  useEffect(() => {
+    searchWithQuery(topicResults, topicQuery); 
+  }, [])
+
+  useEffect(() => {
+    console.log(topicQuery)
+  }, [topicQuery])
+
+  const setTopicQueryAndSearch = (query: TopicQuery) => {
+    setTopicQuery(query);
+    searchWithQuery(topicResults, query);
+  }
+
+  const loadMoreTopics = () => {
+    const newQuery: TopicQuery = {
+      ...topicQuery,
+      page: topicQuery.page === undefined ? 0 : topicQuery.page + 1,
+    };
+    setTopicQuery(newQuery);
+    searchWithQuery(topicResults, newQuery);
+  }
+
+
+  return (
+    <div className="w-full flex flex-col items-center">
+      <TopicSearchBar
+        topicQuery={topicQuery}
+        setTopicQuery={setTopicQueryAndSearch}
+        onSearchPressed={() => { searchWithQuery(topicResults, topicQuery); }}
+      /> 
+      <TopicList 
+        topicResults={topicResults.results}
+        morePresent={moreCanBeFetched}
+        onListEndReached={loadMoreTopics}
+      />
+    </div>
+  );
+}
