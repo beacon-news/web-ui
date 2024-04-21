@@ -1,11 +1,25 @@
 import { SEARCH_API_URL } from "../../config";
 import { TopicQuery } from "../models/topic-query";
 import { TopicResult, TopicResults } from "../models/topic";
+import { urlSearchParamsFromObject } from "./utils";
 
 
 export default async function searchTopics(query: TopicQuery): Promise<TopicResults> {
 
-  const params = new URLSearchParams(query as Record<string, string>);
+  // map 'DTO' keys to accepted parameters
+  const queryObject: Omit<TopicQuery, 'date_min' | 'date_max' | 'page' | 'page_size'> & {
+    date_min: string | undefined,
+    date_max: string | undefined,
+    page: string | undefined,
+    page_size: string | undefined,
+  } = {
+    ...query,
+    date_min: query.date_min?.toISOString(),
+    date_max: query.date_max?.toISOString(),
+    page: query.page?.toString(),
+    page_size: query.page_size?.toString(), 
+  }
+  const params = urlSearchParamsFromObject(queryObject);
 
   const res = await fetch(`http://${SEARCH_API_URL}/api/v1/search/topics?${params.toString()}`, {
     method: 'GET',

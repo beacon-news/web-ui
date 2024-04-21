@@ -5,6 +5,7 @@ import { Tag } from "./tags";
 import { ArticleQuery, SortDirection } from "../lib/models/article-query";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import SearchBar from "./search-bar";
 
 
 export default function ArticleSearchBar({
@@ -138,22 +139,12 @@ export default function ArticleSearchBar({
 
   return (
     <div className="w-full mx-auto md:w-4/5">
-
       {/* article text query */}
-      <div className="w-full flex items-center bg-gray-50 outline outline-1 shadow-md shadow-gray-200 outline-gray-200 rounded-lg px-4 py-2">
-        <input 
-          type="text" 
-          className="w-full outline-none bg-gray-50" 
-          placeholder="Search"
-          onChange={e => setQuery(e.target.value)}
-        />
-        <button 
-          className={`ml-2 px-2 py-1 text-sm ${optionsOpen ? "bg-blue-500 text-white" : "bg-gray-300 text-gray-500"} rounded-md hover:bg-blue-500 hover:text-white`}
-          onClick={() => setOptionsOpen(!optionsOpen)}
-        >
-          Options
-        </button>
-      </div>
+      <SearchBar
+        setQuery={setQuery}
+        optionsOpen={optionsOpen}
+        optionsClicked={() => setOptionsOpen(!optionsOpen)}
+      />
 
       {optionsOpen && 
         <div className="w-full flex flex-col gap-4 gap-y-6 bg-gray-200 p-4 mt-2 rounded-lg shadow-md shadow-gray-200 outline outline-1 outline-gray-200">

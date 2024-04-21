@@ -1,0 +1,449 @@
+{
+  "total": 15,
+  "results": [
+    {
+      "id": "dc7cc2a362d2b092b3e7081acd86f9def266a853",
+      "query": {
+        "publish_date": {
+          "start": "2014-04-11T19:51:16.329953",
+          "end": "2024-04-11T19:51:16.330026"
+        }
+      },
+      "topic": "abortion cancer research states law pregnancy abortions ban fda drugs",
+      "count": 94,
+      "representative_articles": [
+        {
+          "id": "53ed0b9dd9763c72bd683dc389cad4f3498956df",
+          "url": "https://abcnews.go.com/Health/wireStory/arizonas-abortion-ban-cause-scramble-services-states-legal-109104583",
+          "publish_date": "2024-04-10T22:14:00Z",
+          "author": [
+            "LAURA UNGAR Associated Press and"
+          ],
+          "title": [
+            "Arizona's abortion ban is likely to cause a scramble for services in states where it's still legal"
+          ]
+        },
+        {
+          "id": "18c4cf9d03c9f1a1ce35d54e3a267e4ed29f3357",
+          "url": "https://apnews.com/article/arizona-abortion-ban-planned-parenthood-b34b21837bd723c0ab1c3e45f3f63c79",
+          "publish_date": "2024-04-10T21:58:00",
+          "author": [
+            "LAURA UNGAR"
+          ],
+          "title": [
+            "Arizona's abortion ban is likely to cause a scramble for services in states where it's still legal"
+          ]
+        },
+        {
+          "id": "16f6347e8d980e5a858687974672de70fb05d8fc",
+          "url": "https://apnews.com/article/supreme-court-abortion-mifepristone-telemedicine-6351df63f71c1038244c700c7328145a",
+          "publish_date": "2024-03-25T10:46:00",
+          "author": [],
+          "title": [
+            "Supreme Court again confronts the issue of abortion, this time over access to widely used medication"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a4e5811733d293349d3fb91380e8e5d48c494826",
+      "query": {
+        "publish_date": {
+          "start": "2014-04-11T19:51:16.329953",
+          "end": "2024-04-11T19:51:16.330026"
+        }
+      },
+      "topic": "ai media data creators tech instagram google companies platforms lawmakers",
+      "count": 46,
+      "representative_articles": [
+        {
+          "id": "d0cf1a82590b32ab10d1c3e46a0cca47c10fa841",
+          "url": "https://abcnews.go.com/Technology/wireStory/congressman-wanted-understand-ai-back-college-classroom-learn-109115525",
+          "publish_date": "2024-04-11T11:26:00Z",
+          "author": [
+            "DAVID KLEPPER Associated Press"
+          ],
+          "title": [
+            "A congressman wanted to understand AI. So he went back to a college classroom to learn"
+          ]
+        },
+        {
+          "id": "c23457620279535e1a8d2bf883b6705575d5f4f3",
+          "url": "https://apnews.com/article/artificial-intelligence-pennsylvania-law-disclosure-90295a9cebae161ba783ab824d1a54f8",
+          "publish_date": "2024-04-10T21:09:00",
+          "author": [],
+          "title": [
+            "Consumers would be notified of AI-generated content under Pennsylvania bill"
+          ]
+        },
+        {
+          "id": "da17835140a7e275d44595eae430c559f5fc00f7",
+          "url": "https://apnews.com/article/ai-congress-artificial-intelligence-tiktok-meta-27ba6bcfd2ee7a19c0fd7343bfee6e62",
+          "publish_date": "2024-04-11T04:17:00",
+          "author": [],
+          "title": [
+            "A congressman wanted to understand AI. So he went back to a college classroom to learn"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "5952835f1aca674e833c0012e1025e40e4cc40ef",
+      "query": {
+        "publish_date": {
+          "start": "2014-04-11T19:51:16.329953",
+          "end": "2024-04-11T19:51:16.330026"
+        }
+      },
+      "topic": "film movie films theaters novel studio cannes director joker bridget",
+      "count": 44,
+      "representative_articles": [
+        {
+          "id": "e5b0184b829838925d611680d9e1f3c2bb866d41",
+          "url": "https://abcnews.go.com/Entertainment/wireStory/margot-robbie-making-monopoly-movie-blumhouse-reviving-blair-109092271",
+          "publish_date": "2024-04-10T22:38:00Z",
+          "author": [
+            "LINDSEY BAHR AP film writer"
+          ],
+          "title": [
+            "Margot Robbie making ‘Monopoly’ movie and Blumhouse reviving ‘Blair Witch’"
+          ]
+        },
+        {
+          "id": "b94df9b0acebcbb01a86ddc98cf472458e84f22b",
+          "url": "https://apnews.com/article/cinemacon-universal-wicked-e9288f25a4adac03ff5ba5d0d321528e",
+          "publish_date": "2024-04-11T01:12:00",
+          "author": [],
+          "title": [
+            "Universal Pictures teases ‘Wicked’ and announces ‘Five Nights at Freddy’s 2’"
+          ]
+        },
+        {
+          "id": "f18fb99838d7c06da28fb9d9aeecf45e5814949d",
+          "url": "https://apnews.com/article/cinemacon-monopoly-movie-blair-witch-project-c92223edb54e1fd7565476c911a17c3a",
+          "publish_date": "2024-04-10T17:02:00",
+          "author": [],
+          "title": [
+            "Margot Robbie making ‘Monopoly’ movie and Blumhouse reviving ‘Blair Witch’"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "4d14e33494fee524b7c7ad42e063507268b15f90",
+      "query": {
+        "publish_date": {
+          "start": "2014-04-11T19:51:16.329953",
+          "end": "2024-04-11T19:51:16.330026"
+        }
+      },
+      "topic": "market inflation chinese fell taiwan billion dow nasdaq fed stocks",
+      "count": 39,
+      "representative_articles": [
+        {
+          "id": "0f6b5c54e57c0e10acb0cc6c54d6ad3c851510e3",
+          "url": "https://apnews.com/article/stock-markets-inflation-ae64cbb7a42eb0b9d050a09da68d7c7b",
+          "publish_date": "2024-04-03T06:28:00",
+          "author": [
+            "YURI KAGEYAMA"
+          ],
+          "title": [
+            "Stock market today: Asian shares mostly rise cheered by Wall Street finish"
+          ]
+        },
+        {
+          "id": "5e894b48e6b2e40785e382ff45f9efa4bf06975b",
+          "url": "https://apnews.com/article/stock-markets-vanke-inflation-e052261fcaab9121f05ef31b00778cd9",
+          "publish_date": "2024-04-02T06:17:00",
+          "author": [
+            "YURI KAGEYAMA"
+          ],
+          "title": [
+            "Stock market today: Asian shares drop after Wall Street sinks on rate worries"
+          ]
+        },
+        {
+          "id": "e38cb31c61c302801fd7bd3d911a54a021274396",
+          "url": "https://apnews.com/article/stock-markets-inflation-china-japan-108eb259229a1ef4fcca4cf3f7aa4a60",
+          "publish_date": "2024-04-01T04:50:00",
+          "author": [],
+          "title": [
+            "Stock market today: Wall Street slips as bond yields jump on surprisingly strong manufacturing data"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c59523a36070b03127f2afebc12dabea250afa42",
+      "query": {
+        "publish_date": {
+          "start": "2014-04-11T19:51:16.329953",
+          "end": "2024-04-11T19:51:16.330026"
+        }
+      },
+      "topic": "inflation economy fed rates economists recession march bank cuts labor",
+      "count": 31,
+      "representative_articles": [
+        {
+          "id": "7214069e4e85f759b4dae5a9ecce2b91e7a05c05",
+          "url": "https://abcnews.go.com/Business/inflation-expected-surged-higher-march/story?id=109032019",
+          "publish_date": "2024-04-10T13:33:00Z",
+          "author": [
+            "Max Zahn"
+          ],
+          "title": [
+            "Inflation surged higher in March, reversing some progress made in cooling prices"
+          ]
+        },
+        {
+          "id": "e84d674ac42a91b0ab222d48e0af2505588bd7e3",
+          "url": "https://apnews.com/article/federal-reserve-rates-inflation-prices-loans-economy-6956cf26933610aa33a40a4bdd19ece3",
+          "publish_date": "2024-04-06T10:00:00",
+          "author": [
+            "CHRISTOPHER RUGABER"
+          ],
+          "title": [
+            "When will Fed cut rates? As US economy flexes its muscles, maybe later or not at all"
+          ]
+        },
+        {
+          "id": "cdf3a90ce24b52611ae2ab9fbca9cb2c534a4033",
+          "url": "https://edition.cnn.com/2024/04/11/economy/ppi-us-inflation-march/index.html",
+          "publish_date": "2024-04-11T12:35:00Z",
+          "author": [
+            "Alicia Wallace"
+          ],
+          "title": [
+            "US wholesale inflation heated up again last month"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "e80a7d97c2b0e020302ad44e8fa91ed86a330a47",
+      "query": {
+        "publish_date": {
+          "start": "2014-04-11T19:51:16.329953",
+          "end": "2024-04-11T19:51:16.330026"
+        }
+      },
+      "topic": "photo kazakhstan ancient museum aralsk archaeologists tahiti archaeology teahupo species",
+      "count": 29,
+      "representative_articles": [
+        {
+          "id": "bd9af3a6f5226d6f29592ae6743da0cda48b6233",
+          "url": "https://apnews.com/article/aral-sea-communities-towns-villages-remaining-life-5a662c38d44673e7d43f3f17b0447982",
+          "publish_date": "2024-03-27T03:01:00",
+          "author": [
+            "VICTORIA MILKO"
+          ],
+          "title": [
+            "The Aral Sea has all but disappeared. But in small towns and villages, signs of life are popping up"
+          ]
+        },
+        {
+          "id": "ccdfa2b041305fb939acc6f47f46509fa5089555",
+          "url": "https://apnews.com/article/aral-sea-disappearing-graves-headstones-climate-change-1e7b2b66a80c4dffcd00d2ab8c2853cc",
+          "publish_date": "2024-03-20T03:02:00",
+          "author": [
+            "VICTORIA MILKO"
+          ],
+          "title": [
+            "On the Aral Sea, graves rise above the dust. They're reminders of the life its waters once sustained"
+          ]
+        },
+        {
+          "id": "f070e0fb0fbad426c3f4a4c6c55dfc602a692b4e",
+          "url": "https://apnews.com/article/kazakhstan-uzbekistan-aral-sea-drying-climate-change-cb565954d5bd2ef72c02a1db8231800d",
+          "publish_date": "2024-02-08T04:00:00",
+          "author": [
+            "VICTORIA MILKO"
+          ],
+          "title": [
+            "Climate change is fueling the disappearance of the Aral Sea. It's taking residents' livelihoods, too"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "42191dae987b6140df6ff1d4554c49759131bccd",
+      "query": {
+        "publish_date": {
+          "start": "2014-04-11T19:51:16.329953",
+          "end": "2024-04-11T19:51:16.330026"
+        }
+      },
+      "topic": "ohtani trump mizuhara assange mastriano bragg prosecutors hoek york mclemore",
+      "count": 25,
+      "representative_articles": [
+        {
+          "id": "3d13d6655eb54c0fda4318406104fc297bb84d54",
+          "url": "https://abcnews.go.com/Sports/shohei-ohtanis-interpreter-faces-federal-charges-source/story?id=109112449",
+          "publish_date": "2024-04-11T13:49:00Z",
+          "author": [
+            "PAULA LAVIGNE AND T.J. QUINN"
+          ],
+          "title": [
+            "Shohei Ohtani's ex-interpreter faces federal charges, source says"
+          ]
+        },
+        {
+          "id": "3c633e93f27256b7fc316aacb87214c6fcd4d821",
+          "url": "https://apnews.com/article/trump-manhattan-da-bragg-hush-money-trial-a164881f43b1d5064a528b36eada937e",
+          "publish_date": "2024-04-11T04:12:00",
+          "author": [
+            "JAKE OFFENHARTZ"
+          ],
+          "title": [
+            "Manhattan District Attorney Alvin Bragg says Trump's hush money criminal trial isn't about politics"
+          ]
+        },
+        {
+          "id": "83f26b0a31e61febf54afefad44609e1ad04227a",
+          "url": "https://edition.cnn.com/2024/04/10/sport/shohei-ohtani-ippei-mizuhara-investigation/index.html",
+          "publish_date": "2024-04-11T04:04:00Z",
+          "author": [
+            "Joe Sutton, Jason Hanna"
+          ],
+          "title": [
+            "New York Times: Shohei Ohtani’s former interpreter is in negotiations to plead guilty amid theft allegations"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "63e914f999d596a2800d81a684544476dfa39f49",
+      "query": {
+        "publish_date": {
+          "start": "2014-04-11T19:51:16.329953",
+          "end": "2024-04-11T19:51:16.330026"
+        }
+      },
+      "topic": "gaza israeli hamas aid humanitarian netanyahu workers palestinians strike pressure",
+      "count": 24,
+      "representative_articles": [
+        {
+          "id": "79eec95a42b4a851473b4705fd0ecac680dd59f1",
+          "url": "https://abcnews.go.com/International/wireStory/latest-israeli-strike-kills-3-sons-hamas-leader-109124606",
+          "publish_date": "2024-04-11T15:10:00Z",
+          "author": [
+            "The Associated Press"
+          ],
+          "title": [
+            "The Latest |Israel acted in 'spirit of revenge' when it killed 3 sons in strike, Hamas leader says"
+          ]
+        },
+        {
+          "id": "34fd4bd56e770281e52ee5df5b6d81dd59a0b1a6",
+          "url": "https://apnews.com/article/israel-hamas-gaza-war-news-04-10-2024-fad770cbe77a7ae7d1de8568dbabd460",
+          "publish_date": "2024-04-10T07:24:00",
+          "author": [
+            "TIA GOLDENBERG"
+          ],
+          "title": [
+            "An Israeli airstrike in Gaza kills 3 sons and 4 grandchildren of Hamas' top leader"
+          ]
+        },
+        {
+          "id": "4a7813c9efd6157e9e0e221198357a2dbce2db14",
+          "url": "https://apnews.com/article/israel-hamas-war-latest-04-11-2024-9774f91ef80126e580ea5a9b3b84eb74",
+          "publish_date": "2024-04-11T09:51:00",
+          "author": [],
+          "title": [
+            "The Latest |Israel acted in 'spirit of revenge' when it killed 3 sons in strike, Hamas leader says"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "5c25da5c59dac501a968e3f52ece53a7024ad93b",
+      "query": {
+        "publish_date": {
+          "start": "2014-04-11T19:51:16.329953",
+          "end": "2024-04-11T19:51:16.330026"
+        }
+      },
+      "topic": "storm weather snow storms winds texas tornadoes thunderstorms oil flooding",
+      "count": 21,
+      "representative_articles": [
+        {
+          "id": "6596fa0f90db0d7cb93f89425dc02774a90cdd83",
+          "url": "https://edition.cnn.com/2024/04/09/weather/mississippi-valley-storms-tuesday/index.html",
+          "publish_date": "2024-04-09T07:17:00Z",
+          "author": [
+            "Christina Maxouris"
+          ],
+          "title": [
+            "Severe storms threaten flooding, tornadoes and large hail in South and parts of Mississippi Valley today and tomorrow"
+          ]
+        },
+        {
+          "id": "b7163e7e14c35e956bd250bbd0a339c54b9ff083",
+          "url": "https://edition.cnn.com/2024/04/01/weather/severe-weather-threat-us-monday/index.html",
+          "publish_date": "2024-04-01T07:29:00Z",
+          "author": [
+            "Robert Shackelford, Christina Maxouris, Tina Burnside, Mary Gilbert"
+          ],
+          "title": [
+            "Severe storms lash central and eastern US, dumping rain, softball-sized hail and threatening tornadoes"
+          ]
+        },
+        {
+          "id": "fe669879e4fa882f7c8b8ade9038cf0f2232ebcf",
+          "url": "https://edition.cnn.com/2024/04/02/weather/severe-thunderstorm-tornado-threat-eastern-us-tuesday/index.html",
+          "publish_date": "2024-04-02T05:16:00Z",
+          "author": [
+            "Elizabeth Wolfe, Christina Maxouris, Raja Razek, Mary Gilbert, Robert Shackelford"
+          ],
+          "title": [
+            "Severe storms damage homes, cut off power to thousands of Americans across Ohio Valley"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "17977c4f77f69c02e52810c7c1ff826989f3a487",
+      "query": {
+        "publish_date": {
+          "start": "2014-04-11T19:51:16.329953",
+          "end": "2024-04-11T19:51:16.330026"
+        }
+      },
+      "topic": "bucks antetokounmpo vanderveer coach scored basketball kane milwaukee assists rivers",
+      "count": 20,
+      "representative_articles": [
+        {
+          "id": "6d31a27fe1e30f890eafa575daea341956f67fa5",
+          "url": "https://abcnews.go.com/Sports/bucks-rule-giannis-antetokounmpo-calf-regular-season/story?id=109108055",
+          "publish_date": "2024-04-10T23:59:00Z",
+          "author": [
+            "JAMAL COLLIER"
+          ],
+          "title": [
+            "Bucks rule out Giannis Antetokounmpo (calf) for regular season"
+          ]
+        },
+        {
+          "id": "91cfda1c66fb030e03bb7926b510ec134825796a",
+          "url": "https://abcnews.go.com/Sports/giannis-antetokounmpo-avoids-injury-miss-3-games/story?id=109105678",
+          "publish_date": "2024-04-10T23:49:00Z",
+          "author": [
+            "ABC News"
+          ],
+          "title": [
+            "Giannis Antetokounmpo avoids serious injury, to miss last 3 games"
+          ]
+        },
+        {
+          "id": "01c5c3644374fb0474be72b521d488a294c55f6f",
+          "url": "https://apnews.com/article/magic-score-bucks-7dbcb43a49e8becc5b25f526ea5ba355",
+          "publish_date": "2024-04-11T02:35:00",
+          "author": [],
+          "title": [
+            "Portis scores 30 points, Bucks beat Magic 117-99 without injured Antetokounmpo"
+          ]
+        }
+      ]
+    }
+  ]
+}

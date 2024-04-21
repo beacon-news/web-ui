@@ -1,5 +1,6 @@
 import { SEARCH_API_URL } from "../../config";
 import { CategoryResults } from "../models/category";
+import { urlSearchParamsFromObject } from "./utils";
 
 
 interface CategoryQuery {
@@ -11,7 +12,16 @@ interface CategoryQuery {
 
 async function searchCategories(query: CategoryQuery): Promise<CategoryResults> {
 
-  const params = new URLSearchParams(query as Record<string, string>);
+  const queryObject: Omit<CategoryQuery, 'page' | 'page_size'> & {
+    page: string | undefined,
+    page_size: string | undefined,
+  } = {
+    ...query,
+    page: query.page?.toString(),
+    page_size: query.page_size?.toString(), 
+  }
+
+  const params = urlSearchParamsFromObject(queryObject);
 
   const res = await fetch(`http://${SEARCH_API_URL}/api/v1/search/categories?${params.toString()}`, {
     method: 'GET',
