@@ -29,14 +29,16 @@ export default function TopicList({
   }, [inView])
 
   // group topics according to the topic query (date range) they belong to
-  const groupedTopics: { 
-    [key: string]: {
-      query: TopicFilterQuery,
-      articleSum: number,
-      topics: (TopicResult & { normalizedCount?: number })[],
-    }
-  } = {};
+  type GroupedTopic = { 
+    query: TopicFilterQuery,
+    articleSum: number,
+    topics: (TopicResult & { normalizedCount?: number })[],
+  };
+  type GroupedTopics = {
+    [key: string]: GroupedTopic
+  };
 
+  const groupedTopics: GroupedTopics = {};
   for (const topic of topicResults) {
     if (!topic.query) {
       continue;
@@ -65,128 +67,142 @@ export default function TopicList({
     topics.forEach(topic => topic.normalizedCount = topic.count! / groupedTopics[key].articleSum);
   }
 
-
-  // const topicLabels = groupedTopics[Object.keys(groupedTopics)[0]].map(topic => topic.topic!);
-  // const topicCounts = groupedTopics[Object.keys(groupedTopics)[0]].map(topic => topic.count!); 
-  const topicLabels = topicResults.map(topic => topic.topic!);
-  const smallTopicLabels = topicResults.map(topic => topic.topic!.split(' ').slice(0, 3).join(' '));
-  const topicCounts = topicResults.map(topic => topic.count!); 
-
-  const range = Object.keys(groupedTopics)[0]?.split('-');
-
-  const start = range && new Date(range[0]);
-  const end = range && new Date(range[1]);
-
-  const title = `Topics ${start !== undefined && end !== undefined ? `between ${start.toDateString()} - ${end.toDateString()}` : ''}`;
-
-
-  const options = {
-    indexAxis: 'y' as const,
-    elements: {
-      bar: {
-        borderWidth: 2,
-      },
-    },
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'right' as const,
-      },
-      title: {
-        display: true,
-        text: title,
-      },
-      tooltip: {
-        callbacks: {
-          title: (tooltipItems: TooltipItem<any>[]) => {
-            return topicLabels[tooltipItems[0].dataIndex];
-          }
-        }
-      }
-    },
-  };
+  // const options = {
+  //   indexAxis: 'y' as const,
+  //   elements: {
+  //     bar: {
+  //       borderWidth: 2,
+  //     },
+  //   },
+  //   responsive: true,
+  //   plugins: {
+  //     legend: {
+  //       position: 'right' as const,
+  //     },
+  //     title: {
+  //       display: true,
+  //       text: title,
+  //     },
+  //     tooltip: {
+  //       callbacks: {
+  //         title: (tooltipItems: TooltipItem<any>[]) => {
+  //           return topicLabels[tooltipItems[0].dataIndex];
+  //         }
+  //       }
+  //     }
+  //   },
+  // };
     
 
-  const data = {
-    // topicLabels,
-    // labels,
-    labels: smallTopicLabels,
-    datasets: [
-      {
-        label: `Article Count`,
-        data: topicCounts,
-        // data: topicCounts.map(() => 10),
-        // data: labels.map(() => 10),
-        borderColor: 'rgb(255, 99, 132)',
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
-      },
-    ],
-  };
-
-
-  // const wcd = {
-  //   // text
-  //   labels: ['Hello', 'world', 'normally', 'you', 'want', 'more', 'words', 'than', 'this'],
-  //   datasets: [
-  //     {
-  //       label: 'DS',
-  //       // size in pixel
-  //       data: [90, 80, 70, 60, 50, 40, 30, 20, 10],
-  //     },
-  //   ],
-  // }
-
-  // const wco = {
-  //   plugins: [WordCloudChart],
-  // }
-
-
   // const data = {
-  //   labels,
+  //   // topicLabels,
+  //   // labels,
+  //   labels: smallTopicLabels,
   //   datasets: [
   //     {
-  //       label: 'Dataset 1',
-  //       data: labels.map(() => 10),
+  //       label: `Article Count`,
+  //       data: topicCounts,
+  //       // data: topicCounts.map(() => 10),
+  //       // data: labels.map(() => 10),
   //       borderColor: 'rgb(255, 99, 132)',
   //       backgroundColor: 'rgba(255, 99, 132, 0.5)',
   //     },
-  //     {
-  //       label: 'Dataset 2',
-  //       data: labels.map(() => 20),
-  //       borderColor: 'rgb(53, 162, 235)',
-  //       backgroundColor: 'rgba(53, 162, 235, 0.5)',
-  //     },
   //   ],
   // };
-  
+
+  const createChartData = (groupedTopic: GroupedTopic) => {
+    return {
+      // take only the first 3 words from the topic representation
+      labels: groupedTopic.topics.map(topic => topic.topic!.split(' ').slice(0, 3).join(' ')),
+      datasets: [
+        {
+          label: `Article Count`,
+          data: groupedTopic.topics.map(topic => topic.count!),
+          borderColor: 'rgb(255, 99, 132)',
+          backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        },
+    ],
+    }
+  }
+
+  const createChartOptions = (groupedTopic: GroupedTopic) => {
+    const topics = groupedTopic.topics.map(topic => topic.topic!);
+    // const title = `Topics between ${groupedTopic.query.publish_date.start.toLocaleString()} - ${groupedTopic.query.publish_date.end.toLocaleString()}`;
+    return {
+      indexAxis: 'y' as const,
+      elements: {
+        bar: {
+          borderWidth: 2,
+        },
+      },
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'right' as const,
+        },
+        title: {
+          display: false,
+          // display: true,
+          // text: title,
+        },
+        tooltip: {
+          callbacks: {
+            title: (tooltipItems: TooltipItem<any>[]) => {
+              // take all the words from the topic representation
+              return topics[tooltipItems[0].dataIndex];
+            }
+          }
+        }
+      },
+    };
+  }
+
+
   return (
     <div className="flex flex-col items-center gap-4 mb-24 w-full">
 
-
-      <Bar
-        options={options}
-        data={data}
-      />
-
       {
         Object.keys(groupedTopics).map(dateRange => (
-          <div key={dateRange}>
-            <p>{dateRange}</p>
+          <div 
+            key={dateRange}
+            className="w-full"
+          >
+            <p
+              className="text-lg"
+            >Topics between 
+              <span className="text-gray-600"> {groupedTopics[dateRange].query!.publish_date.start.toDateString()} </span>
+              and 
+              <span className="text-gray-600"> {groupedTopics[dateRange].query!.publish_date.end.toDateString()} </span>
+            </p>
+
+            <Bar
+              options={createChartOptions(groupedTopics[dateRange])}
+              data={createChartData(groupedTopics[dateRange])}
+            />
             <div className="flex flex-row flex-wrap gap-2 justify-center items-center">
-              {shuffle(groupedTopics[dateRange].topics).map(topic => (
-              // {/* {middleSort(groupedTopics[dateRange].topics).map(topic => ( */}
-                <p
+              {/* {shuffle(groupedTopics[dateRange].topics).map(topic => ( */}
+              {middleSort(groupedTopics[dateRange].topics, compareTopicCounts).map(topic => (
+                <div
                   key={dateRange + topic.id}
                   className="p-4 bg-slate-200 mb-4 rounded-md
-                  "
+                  text-center flex flex-col items-center gap-y-2"
                   style={{
-                    // fontSize: `${topic.count! * 0.8}px`,
-                    fontSize: `${0.5 + topic.normalizedCount! * 9}rem`,
                     // flex: `${1 + topic.normalizedCount! * 9} 1 ${5 + topic.normalizedCount! * 95}%`,
+                    // minWidth: `${100 + topic.normalizedCount! * 350}px`,
+                    minWidth: `${12 + topic.normalizedCount! * 30}rem`,
                     width: `${10 + topic.normalizedCount! * 90}%`,
                     height: `${10 + topic.normalizedCount! * 90}%`,
                   }}
-                >{topic.topic}</p>
+                >
+                  <p
+                    style={{
+                      // fontSize: `${topic.count! * 0.8}px`,
+                      // fontSize: `${0.5 + topic.normalizedCount! * 9}rem`,
+                      fontSize: `${0.5 + topic.normalizedCount! * 7}em`,
+                    }}
+                  >{topic.topic}</p>
+                  <p className="text-sm text-gray-600 mt-4">{topic.count} articles</p>
+                </div>
               ))}
             </div> 
           </div>
@@ -261,22 +277,6 @@ function shuffle(array: any[]) {
 }
 
 
-function middleSort(array: any & { count?: number }[]) {
-
-  const sorted = [...array].sort((a, b) => b.count! - a.count!);
-  const copy = [...array];
-
-  let m = Math.floor(sorted.length / 2);
-  for (let i = sorted.length-1; i >= 0; i--) {
-
-    let ind = (i % 2 === 0) ? m + sorted.length - i : m - sorted.length + i;
-    copy[ind] = sorted[i]; 
-  }
-
-  return copy;
-}
-
-
 import React from 'react';
 import {
   Chart as ChartJS,
@@ -305,3 +305,29 @@ ChartJS.register(
 );
 
 const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+
+function middleSort(array: any[], compareFn?: (a: any, b: any) => number) {
+
+  const sorted = Array.from(array);
+  sorted.sort(compareFn);
+
+  const arr = Array.from(sorted);
+
+  let j = 0;
+  for (let i = 0; i < sorted.length - 1; i += 2) {
+    arr[j] = sorted[i];
+    arr[arr.length - 1 - j] = sorted[i+1];
+    j++;
+  }
+
+  if (sorted.length % 2 == 1) {
+    let m = Math.floor(arr.length / 2);
+    arr[m] = sorted[sorted.length - 1];
+  }
+
+  return arr;
+}
+
+function compareTopicCounts(a: TopicResult, b: TopicResult) {
+  return a.count! - b.count!;
+}
