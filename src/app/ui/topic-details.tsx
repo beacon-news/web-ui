@@ -25,10 +25,18 @@ export default function TopicDetails({
               className="flex flex-col gap-y-4 bg-slate-200 p-4 justify-between rounded-md
               outline-1 outline-gray-200 "
             >
-              <h3 
-                className="text-lg text-center font-bold hover:cursor-pointer hover:text-blue-500"
-                onClick={() => window.open(topicArticle.url, '_blank')} 
-              >{topicArticle.title}</h3>
+              <div>
+                <img
+                  src={topicArticle.image}
+                  alt={topicArticle.title.join('\n')}
+                  className="w-full h-40 object-cover rounded-md" 
+                >
+                </img>
+                <h3 
+                  className="mt-2 text-lg text-center font-bold hover:cursor-pointer hover:text-blue-500"
+                  onClick={() => window.open(topicArticle.url, '_blank')} 
+                >{topicArticle.title.join('\n')}</h3>
+              </div>
               <div>
                 {topicArticle.author !== undefined &&  topicArticle.author.join(", ").trim() !== "" &&
                   <p

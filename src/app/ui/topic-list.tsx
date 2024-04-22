@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect} from "react";
+import { useEffect, useState} from "react";
 import { useInView } from "react-intersection-observer";
 import Spinner from "./spinner";
 import { ScrollToTop } from "./scroll-to-top";
@@ -26,46 +26,50 @@ export default function TopicList({
     }
   }, [inView])
 
-  // group topics according to the topic query (date range) they belong to
-  const groupedTopics: GroupedTopics = {};
-  for (const topic of topicResults) {
-    if (!topic.query) {
-      continue;
-    }
+  const [groupedTopics, setGroupedTopics] = useState<GroupedTopics>({});
 
-    // this will be the group key
-    const dateRange = `${topic.query.publish_date.start.toLocaleString()}-${topic.query.publish_date.end.toLocaleString()}`;
-    if (!groupedTopics[dateRange]) {
-      groupedTopics[dateRange] = {
-        query: topic.query,
-        articleSum: topic.count!,
-        topics: [topic],
+  useEffect(() => {
+    // group topics according to the topic batch they belong to
+    const newGroupedTopics: GroupedTopics = {};
+    for (const topic of topicResults) {
+      if (!topic.batch_id || !topic.batch_query) {
+        continue;
       }
-    } else {
-      groupedTopics[dateRange] = {
-        ...groupedTopics[dateRange],
-        articleSum: groupedTopics[dateRange].articleSum + topic.count!,
-        topics: [...groupedTopics[dateRange].topics, topic],
-      };
+
+      if (!newGroupedTopics[topic.batch_id]) {
+        newGroupedTopics[topic.batch_id] = {
+          query: topic.batch_query,
+          articleSum: topic.count!,
+          topics: [topic],
+        }
+      } else {
+        newGroupedTopics[topic.batch_id] = {
+          ...newGroupedTopics[topic.batch_id],
+          articleSum: newGroupedTopics[topic.batch_id].articleSum + topic.count!,
+          topics: [...newGroupedTopics[topic.batch_id].topics, topic],
+        };
+      }
     }
-  }
 
-  // normalize topic article counts
-  for (const key in groupedTopics) {
-    const topics = groupedTopics[key].topics;
-    topics.forEach(topic => topic.normalizedCount = topic.count! / groupedTopics[key].articleSum);
-  }
+    // normalize topic article counts
+    for (const key in newGroupedTopics) {
+      const topics = newGroupedTopics[key].topics;
+      topics.forEach(topic => topic.normalizedCount = topic.count! / newGroupedTopics[key].articleSum);
+    }
 
+    setGroupedTopics(newGroupedTopics);
+
+  }, [topicResults]);
 
   return (
     <div className="flex flex-col items-center gap-4 mb-24 w-full">
       {
-        Object.keys(groupedTopics).map(dateRange => (
-          groupedTopics[dateRange].topics.length > 0 &&
+        Object.keys(groupedTopics).map(batchId => (
+          groupedTopics[batchId].topics.length > 0 &&
 
           <GroupedTopicDisplay
-            key={dateRange}
-            groupedTopic={groupedTopics[dateRange]} 
+            key={batchId}
+            groupedTopic={groupedTopics[batchId]} 
           />
         ))
       }

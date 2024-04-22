@@ -13,14 +13,16 @@ export default function ArticleSearchBar({
   articleQuery,
   setArticleQuery,
   onSearchPressed,
+  optionsOpen,
+  setOptionsOpen,
 }: { 
   categories: string[],
   articleQuery: ArticleQuery,
   setArticleQuery: (query: ArticleQuery) => void,
   onSearchPressed: () => void,
+  optionsOpen: boolean,
+  setOptionsOpen: (open: boolean) => void,
 }) {
-
-  const [optionsOpen, setOptionsOpen] = useState<boolean>(false);
 
   const [chosenCategories, setChosenCategories] = useState(() => {
     // initialize categories with the ones from the parent

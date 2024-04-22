@@ -1,15 +1,16 @@
 "use client";
 
-import { TopicFilterQuery, TopicResult } from "../lib/models/topic";
+import { TopicBatchQuery, TopicResult } from "../lib/models/topic";
 import TopicsBarChart from "./topic-bar-chart";
 import TopicDetails from "./topic-details";
 import { ButtonHTMLAttributes, useEffect, useState } from "react";
 import TopicsLabelView from "./topic-label-view";
 import clsx from "clsx";
 import { ChevronDown, ChevronUp } from "./chevrons";
+import { group } from "console";
 
 export type GroupedTopic = { 
-  query: TopicFilterQuery,
+  query: TopicBatchQuery,
   articleSum: number,
   topics: (TopicResult & { normalizedCount?: number })[],
 };
@@ -34,6 +35,7 @@ export default function GroupedTopicDisplay({
     }
   }, [groupedTopic]);
 
+
   return (
     groupedTopic.topics.length > 0 &&
     <div 
@@ -43,9 +45,9 @@ export default function GroupedTopicDisplay({
       <p
         className="text-lg my-4"
       >Topics between 
-        <span className="text-gray-600"> {groupedTopic.query!.publish_date.start.toDateString()} </span>
+        <span className="text-gray-600"> {groupedTopic.query?.publish_date.start.toDateString()} </span>
         and 
-        <span className="text-gray-600"> {groupedTopic.query!.publish_date.end.toDateString()} </span>
+        <span className="text-gray-600"> {groupedTopic.query?.publish_date.end.toDateString()} </span>
       </p>
 
       <div className="flex flex-col gap-4">

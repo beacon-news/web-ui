@@ -2,13 +2,14 @@
 
 export interface TopicResult {
   id?: string;
-  query?: TopicFilterQuery;
+  batch_id?: string,
+  batch_query?: TopicBatchQuery;
   topic?: string,
   count?: number;
   representative_articles: TopicArticle[]; 
 }
 
-export interface TopicFilterQuery {
+export interface TopicBatchQuery {
   publish_date: {
     start: Date,
     end: Date
@@ -19,6 +20,7 @@ export interface TopicFilterQuery {
 export interface TopicArticle {
   id: string;
   url: string;
+  image?: string;
   publish_date: Date;
   author?: string[];
   title: string[];

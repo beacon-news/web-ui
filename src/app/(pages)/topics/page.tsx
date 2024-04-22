@@ -1,12 +1,6 @@
 "use client";
-import { ArticleQuery } from "@/app/lib/models/article-query";
-import searchArticles from "@/app/lib/service/article-search";
-import ArticleList from "@/app/ui/article-list";
-import { Suspense, useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
-import fetchCategories from "@/app/lib/service/category-search";
-import { CategoryResults } from "@/app/lib/models/category";
-import { useRouter } from "next/navigation";
 import { TopicQuery } from "@/app/lib/models/topic-query";
 import { TopicResults } from "@/app/lib/models/topic";
 import searchTopics from "@/app/lib/service/topic-search";
@@ -53,6 +47,8 @@ export default function Page() {
             setTopicResults(fetched);
           } 
           setMoreCanBeFetched(true);
+
+          console.log(fetched);
 
         } catch (error) {
           // TODO: set error handling, propagate it up

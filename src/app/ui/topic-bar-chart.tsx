@@ -46,7 +46,6 @@ export default function TopicsBarChart({
 
   const createChartOptions = useCallback((groupedTopic: GroupedTopic) => {
     const topics = groupedTopic.topics.map(topic => topic.topic!);
-    // const title = `Topics between ${groupedTopic.query.publish_date.start.toLocaleString()} - ${groupedTopic.query.publish_date.end.toLocaleString()}`;
     return {
       indexAxis: 'y' as const,
       elements: {

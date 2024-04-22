@@ -36,10 +36,10 @@ export default async function searchTopics(query: TopicQuery): Promise<TopicResu
   results.results = results.results.map(topicObj => {
     return {
       ...topicObj,
-      query: topicObj.query && {
+      batch_query: topicObj.batch_query && {
         publish_date: {
-          start: new Date(topicObj.query.publish_date.start),
-          end: new Date(topicObj.query.publish_date.end),
+          start: new Date(topicObj.batch_query.publish_date.start),
+          end: new Date(topicObj.batch_query.publish_date.end),
         }
       },
       representative_articles: topicObj.representative_articles.map(art => {

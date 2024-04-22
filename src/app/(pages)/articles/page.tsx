@@ -8,7 +8,7 @@ import { Suspense, useCallback, useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import fetchCategories from "@/app/lib/service/category-search";
 import { CategoryResults } from "@/app/lib/models/category";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 
 export default function Page() {
@@ -36,9 +36,26 @@ export default function Page() {
   });
 
   // TODO: build query from URL params 
-  const router = useRouter();
 
   useEffect(() => {
+    console.log("params changed");
+
+    const params = new URL(window.location.href).searchParams;
+    const newArticleQuery: Record<string, string | string[]> = {};
+    
+    // TODO: do the right conversions 
+
+    Array.from(params).forEach(([key, value]) => {
+      newArticleQuery[key] = value;
+    });
+
+    // try to set the query params as an article query
+    setArticleQuery(newArticleQuery as ArticleQuery);
+  }, []);
+
+
+  useEffect(() => {
+
     const params = new URLSearchParams(articleQuery as Record<string, string>);
 
     const path = `/articles?${params.toString()}`;
@@ -46,6 +63,7 @@ export default function Page() {
 
     const fromPath = new URLSearchParams(path);
     console.log(fromPath);
+
   }, [articleQuery]);
 
   const [moreCanBeFetched, setMoreCanBeFetched] = useState(true);
@@ -76,9 +94,6 @@ export default function Page() {
               results: [...prevArticleResults.results, ...fetched.results],
             });
           } else {
-
-            console.log('replacing');
-            
             // replace the articles
             setArticleResults(fetched);
           } 
@@ -86,7 +101,6 @@ export default function Page() {
           setMoreCanBeFetched(true);
 
         } catch (error) {
-
           // TODO: set error handling, propagate it up
           throw error;
         }
@@ -94,10 +108,12 @@ export default function Page() {
     800,
   ), []);
 
+  // initial load
   useEffect(() => {
     searchWithQuery(articleResults, articleQuery); 
   }, [])
 
+  // debug
   useEffect(() => {
     console.log(articleQuery)
   }, [articleQuery])
@@ -116,6 +132,9 @@ export default function Page() {
     searchWithQuery(articleResults, newQuery);
   }
 
+
+  const [searchOptionsOpen, setSearchOptionsOpen] = useState(false);
+
   const onCategoryClicked = (text: string) => {
     const newQuery: ArticleQuery = {
       ...articleQuery,
@@ -123,6 +142,8 @@ export default function Page() {
     };
     setArticleQuery(newQuery);
     searchWithQuery(articleResults, newQuery);
+    setSearchOptionsOpen(true);
+    scrollToTop();
   }
 
   const onTopicClicked = (text: string) => {
@@ -132,6 +153,15 @@ export default function Page() {
     };
     setArticleQuery(newQuery);
     searchWithQuery(articleResults, newQuery);
+    setSearchOptionsOpen(true);
+    scrollToTop();
+  }
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 100,
+      behavior: 'smooth'
+    });
   }
 
 
@@ -142,6 +172,8 @@ export default function Page() {
         articleQuery={articleQuery}
         setArticleQuery={setArticleQueryAndSearch}
         onSearchPressed={() => { searchWithQuery(articleResults, articleQuery); }}
+        optionsOpen={searchOptionsOpen}
+        setOptionsOpen={setSearchOptionsOpen}
       /> 
       <ArticleList 
         articleResults={articleResults.results} 
