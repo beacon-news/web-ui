@@ -1,5 +1,5 @@
 "use client";
-import { ArticleQuery } from "@/app/lib/models/article-query";
+import { ArticleQuery, fromQueryParams } from "@/app/lib/models/article-query";
 import { ArticleResults } from "@/app/lib/models/article";
 import searchArticles from "@/app/lib/service/article-search";
 import ArticleList from "@/app/ui/article-list";
@@ -36,35 +36,34 @@ export default function Page() {
   });
 
   // TODO: build query from URL params 
+  // useEffect(() => {
+  //   console.log("params changed");
 
-  useEffect(() => {
-    console.log("params changed");
+  //   const params = new URL(window.location.href).searchParams;
 
-    const params = new URL(window.location.href).searchParams;
-    const newArticleQuery: Record<string, string | string[]> = {};
-    
-    // TODO: do the right conversions 
-
-    Array.from(params).forEach(([key, value]) => {
-      newArticleQuery[key] = value;
-    });
-
-    // try to set the query params as an article query
-    setArticleQuery(newArticleQuery as ArticleQuery);
-  }, []);
+  //   try {
+  //     const newArticleQuery: ArticleQuery = fromQueryParams(params);
+  //     console.log("built query", newArticleQuery);
+      
+  //     setArticleQuery(newArticleQuery);
+  //   } catch (e) {
+  //     // TODO: error handling
+  //     console.error(e);
+  //   }
+  // }, []);
 
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    const params = new URLSearchParams(articleQuery as Record<string, string>);
+  //   const params = new URLSearchParams(articleQuery as Record<string, string>);
 
-    const path = `/articles?${params.toString()}`;
-    console.log(path);
+  //   const path = `/articles?${params.toString()}`;
+  //   console.log(path);
 
-    const fromPath = new URLSearchParams(path);
-    console.log(fromPath);
+  //   const fromPath = new URLSearchParams(path);
+  //   console.log(fromPath);
 
-  }, [articleQuery]);
+  // }, [articleQuery]);
 
   const [moreCanBeFetched, setMoreCanBeFetched] = useState(true);
 
