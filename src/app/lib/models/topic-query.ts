@@ -1,3 +1,6 @@
+import { SortDirection } from "./sort-direction";
+import { TopicResult } from "./topic";
+
 export interface TopicQuery {
   ids?: string[];
   batch_ids?: string[];
@@ -10,8 +13,6 @@ export interface TopicQuery {
   page?: number;
   page_size?: number;
   sort_field?: "date_min" | "date_max" | "count";
-  sort_dir?: SortDirection,
-  return_attributes?: string[];
+  sort_dir?: SortDirection;
+  return_attributes?: Array<keyof TopicResult>;
 }
-
-export type SortDirection = "asc" | "desc";

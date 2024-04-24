@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { Tag } from "./tags";
-import { ArticleQuery, SortDirection } from "../lib/models/article-query";
+import { ArticleQuery } from "../lib/models/article-query";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import SearchBar from "./search-bar";
+import { SortDirection } from "../lib/models/sort-direction";
 
 
 export default function ArticleSearchBar({

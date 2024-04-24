@@ -1,7 +1,3 @@
-"use client";
-
-import { useState } from "react";
-
 export default function Tags({
   texts, 
   selected = undefined,

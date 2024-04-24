@@ -1,25 +1,13 @@
 import { SEARCH_API_URL } from "../../config";
 import { TopicQuery } from "../models/topic-query";
-import { TopicResult, TopicResults } from "../models/topic";
+import { TopicResult } from "../models/topic";
 import { urlSearchParamsFromObject } from "./utils";
+import { Results } from "../models/results";
 
 
-export default async function searchTopics(query: TopicQuery): Promise<TopicResults> {
+export default async function searchTopics(query: TopicQuery): Promise<Results<TopicResult>> {
 
-  // map 'DTO' keys to accepted parameters
-  const queryObject: Omit<TopicQuery, 'date_min' | 'date_max' | 'page' | 'page_size'> & {
-    date_min: string | undefined,
-    date_max: string | undefined,
-    page: string | undefined,
-    page_size: string | undefined,
-  } = {
-    ...query,
-    date_min: query.date_min?.toISOString(),
-    date_max: query.date_max?.toISOString(),
-    page: query.page?.toString(),
-    page_size: query.page_size?.toString(), 
-  }
-  const params = urlSearchParamsFromObject(queryObject);
+  const params = urlSearchParamsFromObject(query);
 
   const res = await fetch(`http://${SEARCH_API_URL}/api/v1/search/topics?${params.toString()}`, {
     method: 'GET',
@@ -30,7 +18,7 @@ export default async function searchTopics(query: TopicQuery): Promise<TopicResu
     throw new Error("Failed to fetch topics...");
   }
 
-  const results = await res.json() as TopicResults;
+  const results = await res.json() as Results<TopicResult>;
 
   // transform the date strings to Date objects
   results.results = results.results.map(topicObj => {

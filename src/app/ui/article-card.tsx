@@ -5,7 +5,6 @@ import React, { useState } from 'react';
 import { ArticleResult } from '../lib/models/article';
 import Tags from './tags';
 import { useRouter } from 'next/navigation';
-import { ArticleQuery } from '../lib/models/article-query';
 import { ChevronDown, ChevronUp } from './chevrons';
 
 export default function ArticleCard(

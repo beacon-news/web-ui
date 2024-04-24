@@ -1,3 +1,6 @@
+import { ArticleResult } from "./article";
+import { SortDirection } from "./sort-direction";
+
 export interface ArticleQuery {
   ids?: string[];
   query?: string;
@@ -14,10 +17,9 @@ export interface ArticleQuery {
   sort_field?: "publish_date";
   sort_dir?: SortDirection;
   search_type?: SearchType;
-  return_attributes?: string[];
+  return_attributes?: Array<keyof ArticleResult>;
 }
 
-export type SortDirection = "asc" | "desc";
 export type SearchType = "text" | "semantic" | "combined";
 
 

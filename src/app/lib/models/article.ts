@@ -14,11 +14,6 @@ export interface ArticleResult {
   paragraphs: string[];
 }
 
-export interface ArticleResults {
-  total: number;
-  results: ArticleResult[];
-}
-
 export interface ArticleCategory {
   id: string;
   name: string;

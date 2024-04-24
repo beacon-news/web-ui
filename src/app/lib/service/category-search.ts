@@ -1,5 +1,6 @@
 import { SEARCH_API_URL } from "../../config";
-import { CategoryResults } from "../models/category";
+import { CategoryResult } from "../models/category";
+import { Results } from "../models/results";
 import { urlSearchParamsFromObject } from "./utils";
 
 
@@ -10,7 +11,7 @@ interface CategoryQuery {
   page_size?: number;
 }
 
-async function searchCategories(query: CategoryQuery): Promise<CategoryResults> {
+async function searchCategories(query: CategoryQuery): Promise<Results<CategoryResult>> {
 
   const queryObject: Omit<CategoryQuery, 'page' | 'page_size'> & {
     page: string | undefined,
@@ -32,13 +33,13 @@ async function searchCategories(query: CategoryQuery): Promise<CategoryResults> 
     throw new Error("Failed to fetch categories...");
   }
 
-  const results = await res.json() as CategoryResults;
+  const results = await res.json() as Results<CategoryResult>;
 
   console.log(`got ${results.results.length} categories, total ${results.total}`)
   return results;
 }
 
-export default async function fetchCategories(): Promise<CategoryResults> {
+export default async function fetchCategories(): Promise<Results<CategoryResult>> {
 
   // TODO: actually fetch all categories using paginated requests, instead of just 30
   const query: CategoryQuery = {
@@ -49,7 +50,7 @@ export default async function fetchCategories(): Promise<CategoryResults> {
 
   let results = await searchCategories(query);
 
-  let categoryResults: CategoryResults = {
+  let categoryResults: Results<CategoryResult> = {
     total: results.total,
     results: results.results,
   };

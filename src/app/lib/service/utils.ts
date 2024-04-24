@@ -9,12 +9,24 @@ export function urlSearchParamsFromObject(obj: Record<string, any>): URLSearchPa
 
     if (Array.isArray(value)) {
       for (const val of value) {
-        params.append(key, val.toString());
+
+        if (val === undefined || val == null) {
+          continue;
+        }
+
+        params.append(key, paramToString(val));
       }
     } else {
-      params.append(key, value.toString());
+      params.append(key, paramToString(value));
     }
   });
 
   return params;
+}
+
+function paramToString(param: any) {
+  if (param instanceof Date) {
+    return param.toISOString();
+  }
+  return param.toString();
 }

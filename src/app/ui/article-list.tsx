@@ -2,19 +2,21 @@
 
 import ArticleCard from "@/app/ui/article-card";
 import { useEffect} from "react";
-import { ArticleResult, ArticleResults } from "../lib/models/article";
+import { ArticleResult } from "../lib/models/article";
 import { useInView } from "react-intersection-observer";
 import Spinner from "./spinner";
 import { ScrollToTop } from "./scroll-to-top";
 
 
 export default function ArticleList({ 
+  articleCountText,
   articleResults, 
   moreArticlesPresent,
   onListEndReached,
   onCategoryClicked,
   onTopicClicked,
  } : { 
+  articleCountText: string | undefined,
   articleResults: ArticleResult[],
   moreArticlesPresent: boolean,
   onListEndReached: () => void,
@@ -32,13 +34,16 @@ export default function ArticleList({
   
   return (
     <div className="mb-24">
-      {/* <p className="pt-4 px-4 mt-8 text-sm text-gray-400 text-right">Found {articleResults.total} results</p> */}
-      <div className="flex flex-col items-center gap-4">
+      <div className="mt-6 flex flex-col items-center">
+
+        {articleCountText &&  
+          <p className="text-sm text-gray-400 text-right w-full px-4">{articleCountText}</p>
+        }
 
         {/* show the articles */}
         {articleResults.length > 0 &&
           <>
-            <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 grid-flow-row grid-align-center">
+            <div className="mt-2 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 grid-flow-row grid-align-center">
               {articleResults.map((article) => (
                 <div key={article.id} className="mt-4">
                   <ArticleCard 

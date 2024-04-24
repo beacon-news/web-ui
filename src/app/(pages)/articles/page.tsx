@@ -1,19 +1,22 @@
 "use client";
 import { ArticleQuery, fromQueryParams } from "@/app/lib/models/article-query";
-import { ArticleResults } from "@/app/lib/models/article";
+// import { ArticleResults } from "@/app/lib/models/article";
 import searchArticles from "@/app/lib/service/article-search";
 import ArticleList from "@/app/ui/article-list";
 import ArticleSearchBar from "@/app/ui/article-search-bar";
 import { Suspense, useCallback, useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import fetchCategories from "@/app/lib/service/category-search";
-import { CategoryResults } from "@/app/lib/models/category";
+// import { CategoryResults } from "@/app/lib/models/category";
 import { useParams, useRouter } from "next/navigation";
+import { Results } from "@/app/lib/models/results";
+import { CategoryResult } from "@/app/lib/models/category";
+import { ArticleResult } from "@/app/lib/models/article";
 
 
 export default function Page() {
 
-  const [categoryResults, setCategoryResults] = useState<CategoryResults>({
+  const [categoryResults, setCategoryResults] = useState<Results<CategoryResult>>({
     total: 0,
     results: [], 
   });
@@ -24,7 +27,8 @@ export default function Page() {
     })();
   }, []);
 
-  const [articleResults, setArticleResults] = useState<ArticleResults>({
+  // const [articleResults, setArticleResults] = useState<ArticleResults>({
+  const [articleResults, setArticleResults] = useState<Results<ArticleResult>>({
     total: 0,
     results: [],
   });
@@ -34,6 +38,35 @@ export default function Page() {
     page: -1,
     page_size: 20,
   });
+
+  // const [articleQuery, setArticleQuery] = useState<ArticleQuery>(() => {
+  //   const params = new URL(window.location.href).searchParams;
+
+  //   try {
+  //     const newArticleQuery: ArticleQuery = fromQueryParams(params);
+  //     console.log("built query", newArticleQuery);
+
+  //     if (newArticleQuery.page === undefined) {
+  //       newArticleQuery.page = -1;
+  //     } else {
+  //       // so the loading increment part works
+  //       newArticleQuery.page -= 1;
+  //     }
+
+  //     if (newArticleQuery.page_size === undefined) {
+  //       newArticleQuery.page_size = 20;
+  //     }
+
+  //     return newArticleQuery;
+  //   } catch (e) {
+  //     // TODO: error handling
+  //     console.error(e);
+  //     return {
+  //       page: -1,
+  //       page_size: 20,
+  //     }
+  //   }
+  // });
 
   // TODO: build query from URL params 
   // useEffect(() => {
@@ -69,7 +102,8 @@ export default function Page() {
 
   const searchWithQuery = useCallback(
     useDebouncedCallback(
-      async (prevArticleResults: ArticleResults, query: ArticleQuery) => {
+      // async (prevArticleResults: ArticleResults, query: ArticleQuery) => {
+      async (prevArticleResults: Results<ArticleResult>, query: ArticleQuery) => {
 
         if (
           // there is nothing more to load
@@ -163,6 +197,19 @@ export default function Page() {
     });
   }
 
+  const makeArticleCountText = () => {
+    if (articleResults.total === undefined || articleResults.total <= 0) {
+      return undefined; 
+    }
+
+    // in case of 'text' search, show all articles which can be fetched
+    if (articleQuery.search_type === undefined || articleQuery.search_type === "text") {
+      return `Found ${articleResults.total} articles`;
+    }
+
+    // in case of 'semantic' and 'combined' search, only the first (max) page_size results are shown
+    return `Showing ${articleResults.results.length} most relevant articles`;
+  }
 
   return (
     <div className="w-full flex flex-col items-center">
@@ -175,6 +222,7 @@ export default function Page() {
         setOptionsOpen={setSearchOptionsOpen}
       /> 
       <ArticleList 
+        articleCountText={makeArticleCountText()}
         articleResults={articleResults.results} 
         moreArticlesPresent={moreCanBeFetched} 
         onListEndReached={loadMoreArticles}
