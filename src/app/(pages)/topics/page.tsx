@@ -40,7 +40,7 @@ export default function Page() {
           const fetched = await searchTopics(query); 
 
           if (query.page && query.page > 0) {
-            // append the articles
+            // append the topics
             setTopicResults({
               total: fetched.total,
               results: [...prevTopicResults.results, ...fetched.results],
@@ -62,9 +62,9 @@ export default function Page() {
   ), []);
 
   // fetch topics on load
-  useEffect(() => {
-    searchWithQuery(topicResults, topicQuery); 
-  }, [])
+  // useEffect(() => {
+  //   searchWithQuery(topicResults, topicQuery); 
+  // }, [])
 
   useEffect(() => {
     console.log(topicQuery)

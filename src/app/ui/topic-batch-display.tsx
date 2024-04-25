@@ -3,57 +3,117 @@
 import { TopicResult } from "../lib/models/topic";
 import TopicsBarChart from "./topic-bar-chart";
 import TopicDetails from "./topic-details";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import TopicsLabelView from "./topic-label-view";
 import clsx from "clsx";
 import { ChevronDown, ChevronUp } from "./chevrons";
-import { TopicBatchArticleQuery } from "../lib/models/topic-batch";
+import { TopicBatchArticleQuery, TopicBatchResult } from "../lib/models/topic-batch";
+import TopicsBatchLabelView from "./topic-batch-label-view";
+import searchTopics from "../lib/service/topic-search";
+import { TopicQuery } from "../lib/models/topic-query";
+import { Results } from "../lib/models/results";
 
-export type GroupedTopic = { 
-  query: TopicBatchArticleQuery,
-  articleSum: number,
-  topics: (TopicResult & { normalizedCount?: number })[],
-};
-export type GroupedTopics = {
-  [key: string]: GroupedTopic
-};
 
-export default function GroupedTopicDisplay({ 
-  groupedTopic,
+
+export default function TopicBatchDisplay({ 
+  topicBatchResult,
  } : { 
-  groupedTopic: GroupedTopic,
+  topicBatchResult: TopicBatchResult,
 }) {
 
   const [barChartToggled, setBarChartToggled] = useState(false);
-  const [labelViewToggled, setLabelViewToggled] = useState(true);
+  const [labelViewToggled, setLabelViewToggled] = useState(false);
   const [listViewToggled, setListViewToggled] = useState(false);
 
+  const [topicResults, setTopicResults] = useState<Results<TopicResult>>({
+    total: 0,
+    results: [],
+  });
+
+  const [topicQuery, setTopicQuery] = useState<TopicQuery>({
+    page: 0,
+    page_size: 10,
+  });
+
+  const searchTopicsWithQuery = useCallback(
+    async (prevTopicResults: Results<TopicResult>, query: TopicQuery) => {
+
+      if (prevTopicResults.total < query.page! * query.page_size!) {
+        // there is nothing more to load
+        return;
+      }
+
+      try {
+        const fetched = await searchTopics(query); 
+
+        if (query.page && query.page > 0) {
+          // append the topics
+          setTopicResults({
+            total: fetched.total,
+            results: [...prevTopicResults.results, ...fetched.results],
+          });
+        } else {
+          // replace the topics if it's the first page
+          setTopicResults(fetched);
+        } 
+
+        console.log(fetched);
+
+      } catch (error) {
+        // TODO: set error handling, propagate it up
+        throw error;
+      }
+    }, 
+  []);
+
+  const loadMoreTopics = () => {
+    searchTopicsWithQuery(topicResults, topicQuery);
+    setTopicQuery({
+      ...topicQuery,
+      page: topicQuery.page === undefined ? 0 : topicQuery.page + 1,
+    })
+  }
+
   useEffect(() => {
-    // show topic details if there is only 1 topic
-    if (groupedTopic.topics.length === 1) {
-      setListViewToggled(true);
+    // only fetch articles if at least one visualization is toggled
+    if (labelViewToggled || barChartToggled || listViewToggled) {
+      loadMoreTopics();
     }
-  }, [groupedTopic]);
+  }, [labelViewToggled, barChartToggled, listViewToggled]);
 
 
   return (
-    groupedTopic.topics.length > 0 &&
     <div 
       className="w-full my-12"
     >
       <hr className="border-slate-300"></hr>
-      <p
-        className="text-lg my-4"
-      >Topics between 
-        <span className="text-gray-600"> {groupedTopic.query?.publish_date.start.toDateString()} </span>
-        and 
-        <span className="text-gray-600"> {groupedTopic.query?.publish_date.end.toDateString()} </span>
-      </p>
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center my-4">
+        <p
+          className="text-lg"
+        >Topics between 
+          <span className="text-gray-600"> {topicBatchResult.query?.publish_date.start.toDateString()} </span>
+          and 
+          <span className="text-gray-600"> {topicBatchResult.query?.publish_date.end.toDateString()} </span>
+        </p>
+        {topicResults.total > 0 ? 
+          <div className="flex flex-col gap-2">
+            <p 
+              className="text-md text-gray-600"
+            >Fetched top {topicResults.results.length}/{topicResults.total} topics</p>
+            {topicResults.total > topicResults.results.length &&
+              <button
+                className="text-sm px-2 py-1 rounded-md text-white bg-gray-400 hover:bg-blue-500 "
+                onClick={loadMoreTopics}
+              >fetch more</button>
+            }
+          </div>
+          :
+          <p className="text-md text-gray-600">{topicBatchResult.topic_count} topics</p>
+        }
+      </div>
 
       <div className="flex flex-col gap-4">
-
-        {/* only show visualizations if there are at least 2 topics to compare */}
-        {groupedTopic.topics.length > 1 ?
+        {topicResults.results.length !== 1 ? 
           <>
             <div>
               <ToggleButton 
@@ -67,7 +127,7 @@ export default function GroupedTopicDisplay({
               />
 
               {labelViewToggled &&
-                <TopicsLabelView groupedTopic={groupedTopic} />
+                <TopicsBatchLabelView topics={topicResults.results} />
               }
             </div>
 
@@ -83,7 +143,7 @@ export default function GroupedTopicDisplay({
               />
 
               {barChartToggled &&
-                <TopicsBarChart groupedTopic={groupedTopic} />
+                <TopicsBarChart topics={topicResults.results} />
               }
             </div>
           </>
@@ -105,7 +165,7 @@ export default function GroupedTopicDisplay({
           {listViewToggled &&
             <div 
               className="mt-8 flex flex-col gap-8">
-              {groupedTopic.topics.map((topic) => <TopicDetails key={topic.id} topic={topic} />)} 
+              {topicResults.results.map((topic) => <TopicDetails key={topic.id} topic={topic} />)} 
             </div>
           }
         </div>

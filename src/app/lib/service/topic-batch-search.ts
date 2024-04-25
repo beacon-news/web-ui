@@ -21,13 +21,13 @@ export default async function searchTopicBatches(query: TopicBatchQuery): Promis
   const results = await res.json() as Results<TopicBatchResult>;
 
   // transform the date strings to Date objects
-  results.results = results.results.map(topicObj => {
+  results.results = results.results.map(batchObj => {
     return {
-      ...topicObj,
-      query: topicObj.query && {
+      ...batchObj,
+      query: batchObj.query && {
         publish_date: {
-          start: new Date(topicObj.query.publish_date.start),
-          end: new Date(topicObj.query.publish_date.end),
+          start: new Date(batchObj.query.publish_date.start),
+          end: new Date(batchObj.query.publish_date.end),
         }
       },
     }

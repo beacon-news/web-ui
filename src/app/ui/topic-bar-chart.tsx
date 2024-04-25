@@ -11,6 +11,7 @@ import {
 } from 'chart.js';
 import { GroupedTopic } from './grouped-topic-display';
 import { Bar } from 'react-chartjs-2';
+import { TopicResult } from '../lib/models/topic';
 
 
 ChartJS.register(
@@ -24,19 +25,19 @@ ChartJS.register(
 
 
 export default function TopicsBarChart({
-  groupedTopic,
+  topics,
 } : {
-  groupedTopic: GroupedTopic,
+  topics: TopicResult[],
 }) {
 
-  const createChartData = useCallback((groupedTopic: GroupedTopic) => {
+  const createChartData = useCallback((topics: TopicResult[]) => {
     return {
       // take only the first 3 words from the topic representation
-      labels: groupedTopic.topics.map(topic => topic.topic!.split(' ').slice(0, 3).join(' ')),
+      labels: topics.map(topic => topic.topic!.split(' ').slice(0, 3).join(' ')),
       datasets: [
         {
           label: `Article Count`,
-          data: groupedTopic.topics.map(topic => topic.count!),
+          data: topics.map(topic => topic.count!),
           borderColor: 'rgb(255, 99, 132)',
           backgroundColor: 'rgba(255, 99, 132, 0.5)',
         },
@@ -44,8 +45,8 @@ export default function TopicsBarChart({
     }
   }, []);
 
-  const createChartOptions = useCallback((groupedTopic: GroupedTopic) => {
-    const topics = groupedTopic.topics.map(topic => topic.topic!);
+  const createChartOptions = useCallback((topics: TopicResult[]) => {
+    const topicNames = topics.map(topic => topic.topic!);
     return {
       indexAxis: 'y' as const,
       elements: {
@@ -65,7 +66,7 @@ export default function TopicsBarChart({
           callbacks: {
             title: (tooltipItems: TooltipItem<any>[]) => {
               // take all the words from the topic representation
-              return topics[tooltipItems[0].dataIndex];
+              return topicNames[tooltipItems[0].dataIndex];
             }
           }
         }
@@ -75,8 +76,8 @@ export default function TopicsBarChart({
 
   return (
     <Bar
-      options={createChartOptions(groupedTopic)}
-      data={createChartData(groupedTopic)}
+      options={createChartOptions(topics)}
+      data={createChartData(topics)}
     />
   );
 }

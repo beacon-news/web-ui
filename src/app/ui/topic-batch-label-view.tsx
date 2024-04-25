@@ -1,15 +1,29 @@
+import { useEffect, useState } from "react";
 import { TopicResult } from "../lib/models/topic";
-import { GroupedTopic } from "./grouped-topic-display";
+import { TopicBatchResult } from "../lib/models/topic-batch";
+import { Results } from "../lib/models/results";
+
 
 export default function TopicsBatchLabelView({
-  groupedTopic,
+  topics,
 } : {
-  groupedTopic: GroupedTopic,
+  topics: TopicResult[],
 }) {
+
+  type NormalizedTopic = (TopicResult & { normalizedCount?: number })
+
+  // count of articles in the currently fetched topics
+  const articleCountInTopics = topics.reduce((acc, topic) => acc + topic.count!, 0)
+
+  const normalizedTopics: NormalizedTopic[] = topics.map(topic => ({
+    ...topic,
+    normalizedCount: topic.count! / articleCountInTopics,
+  }))
+  
 
   return (
     <div className="flex flex-row flex-wrap gap-2 justify-center items-center">
-      {middleSort(groupedTopic.topics, compareTopicCounts).map(topic => (
+      {middleSort(normalizedTopics, compareTopicCounts).map(topic => (
         <div
           key={topic.id}
           className="p-4 bg-slate-200 mb-4 rounded-md

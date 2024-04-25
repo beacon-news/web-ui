@@ -11,5 +11,6 @@ export interface TopicBatchResult {
   id?: string;
   query?: TopicBatchArticleQuery
   article_count?: number;
+  topic_count?: number;
   create_time?: Date;
 }

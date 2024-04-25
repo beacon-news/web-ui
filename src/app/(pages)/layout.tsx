@@ -3,6 +3,7 @@
 import Link from "next/link";
 import clsx from "clsx";
 import { usePathname } from "next/navigation";
+import { Suspense } from "react";
 
 const links = [
   { 
@@ -12,6 +13,10 @@ const links = [
   { 
     name: "Topics", 
     href: "/topics" 
+  },
+  {
+    name: "Topic Batches",
+    href: "/topic-batches",
   },
 ];
 
@@ -42,7 +47,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </nav>
       </header>
       <main className="w-full h-full flex flex-col mx-auto max-w-5xl px-4 py-2">
+        <Suspense fallback={<div className="w-full h-full mx-auto text-lg">Loading...</div>}>
         {children}
+        </Suspense>
       </main>
     </>
   );

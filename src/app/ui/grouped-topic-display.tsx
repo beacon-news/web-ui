@@ -83,7 +83,7 @@ export default function GroupedTopicDisplay({
               />
 
               {barChartToggled &&
-                <TopicsBarChart groupedTopic={groupedTopic} />
+                <TopicsBarChart topics={groupedTopic.topics} />
               }
             </div>
           </>

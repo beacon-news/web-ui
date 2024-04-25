@@ -6,6 +6,7 @@ import { Results } from "@/app/lib/models/results";
 import { TopicBatchQuery } from "@/app/lib/models/topic-batch-query";
 import searchTopicBatches from "@/app/lib/service/topic-batch-search";
 import { TopicBatchResult } from "@/app/lib/models/topic-batch";
+import TopicBatchList from "@/app/ui/topic-batch-list";
 
 
 export default function Page() {
@@ -15,13 +16,12 @@ export default function Page() {
     results: [],
   });
 
-  // start at -1 so incrementing it when encountering the end of the list gives page '0', the first page to fetch
   const [topicBatchQuery, setTopicBatchQuery] = useState<TopicBatchQuery>({
-    page: -1,
+    page: 0,
     page_size: 20,
   });
 
-  const [moreCanBeFetched, setMoreCanBeFetched] = useState(true);
+  const [initialFetch, setInitialFetch] = useState(true);
 
   const searchWithQuery = useCallback(
     useDebouncedCallback(
@@ -29,13 +29,12 @@ export default function Page() {
 
         if (prevResults.total < query.page! * query.page_size!) {
           // there is nothing more to load
-          setMoreCanBeFetched(false);
           return;
         }
 
         try {
           const fetched = await searchTopicBatches(query); 
-
+          
           if (query.page && query.page > 0) {
             // append the articles
             setTopicBatchResults({
@@ -46,7 +45,6 @@ export default function Page() {
             // replace the batches
             setTopicBatchResults(fetched);
           } 
-          setMoreCanBeFetched(true);
 
           console.log(fetched);
 
@@ -60,7 +58,8 @@ export default function Page() {
 
   // fetch batches on load
   useEffect(() => {
-    searchWithQuery(topicBatchResults, topicBatchQuery); 
+    loadNextBatch();
+    setInitialFetch(false);
   }, [])
 
   useEffect(() => {
@@ -72,28 +71,34 @@ export default function Page() {
     searchWithQuery(topicBatchResults, query);
   }
 
-  const loadMoreBatches = () => {
-    const newQuery: TopicBatchQuery = {
+  const loadNextBatch = () => {
+    searchWithQuery(topicBatchResults, topicBatchQuery);
+    setTopicBatchQuery({
       ...topicBatchQuery,
       page: topicBatchQuery.page === undefined ? 0 : topicBatchQuery.page + 1,
-    };
-    setTopicBatchQuery(newQuery);
-    searchWithQuery(topicBatchResults, newQuery);
+    });
+  }
+
+  const loadNextBatchIfPresent = () => {
+    if (topicBatchResults.total > topicBatchResults.results.length) {
+      loadNextBatch();
+    }
   }
 
 
   return (
     <div className="w-full flex flex-col items-center">
+      
       {/* <TopicSearchBar
         topicQuery={topicQuery}
         setTopicQuery={setTopicQueryAndSearch}
         onSearchPressed={() => { searchWithQuery(topicResults, topicQuery); }}
-      /> 
-      <TopicList 
-        topicResults={topicResults.results}
-        morePresent={moreCanBeFetched}
-        onListEndReached={loadMoreTopics}
-      /> */}
+      />  */}
+      <TopicBatchList
+        batchResults={topicBatchResults.results}
+        morePresent={initialFetch || topicBatchResults.total < topicBatchResults.results.length}
+        onListEndReached={loadNextBatchIfPresent}
+      />
     </div>
   );
 }
