@@ -12,27 +12,27 @@ import { TopicResult } from "@/app/lib/models/topic";
 
 export default function Page() {
 
-  // const [topicResults, setTopicResults] = useState<TopicResults>({
   const [topicResults, setTopicResults] = useState<Results<TopicResult>>({
     total: 0,
     results: [],
   });
 
-  // start at -1 so incrementing it when encountering the end of the list gives page '0', the first page to fetch
   const [topicQuery, setTopicQuery] = useState<TopicQuery>({
-    page: -1,
-    page_size: 20,
+    page: 0,
+    page_size: 10,
   });
 
-  const [moreCanBeFetched, setMoreCanBeFetched] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   const searchWithQuery = useCallback(
     useDebouncedCallback(
-      async (prevTopicResults: Results<TopicResult>, query: TopicQuery) => {
+      async (prevTopicResults: Results<TopicResult>, query: TopicQuery) => { 
+
+        setLoading(true);
 
         if (prevTopicResults.total < query.page! * query.page_size!) {
           // there is nothing more to load
-          setMoreCanBeFetched(false);
+          setLoading(false);
           return;
         }
 
@@ -49,22 +49,27 @@ export default function Page() {
             // replace the topics
             setTopicResults(fetched);
           } 
-          setMoreCanBeFetched(true);
 
           console.log(fetched);
 
         } catch (error) {
           // TODO: set error handling, propagate it up
           throw error;
+        } finally {
+          setLoading(false);
         }
     },
     800,
   ), []);
 
   // fetch topics on load
-  // useEffect(() => {
-  //   searchWithQuery(topicResults, topicQuery); 
-  // }, [])
+  useEffect(() => {
+    searchWithQuery(topicResults, topicQuery);
+    setTopicQuery({
+      ...topicQuery,
+      page: topicQuery.page === undefined ? 0 : topicQuery.page + 1,
+    });
+  }, [])
 
   useEffect(() => {
     console.log(topicQuery)
@@ -75,15 +80,17 @@ export default function Page() {
     searchWithQuery(topicResults, query);
   }
 
-  const loadMoreTopics = () => {
-    const newQuery: TopicQuery = {
+  const loadNextTopics = () => {
+    // wait until the previous request is done
+    if (loading) {
+      return;
+    }
+    searchWithQuery(topicResults, topicQuery);
+    setTopicQuery({
       ...topicQuery,
       page: topicQuery.page === undefined ? 0 : topicQuery.page + 1,
-    };
-    setTopicQuery(newQuery);
-    searchWithQuery(topicResults, newQuery);
+    });
   }
-
 
   return (
     <div className="w-full flex flex-col items-center">
@@ -93,9 +100,10 @@ export default function Page() {
         onSearchPressed={() => { searchWithQuery(topicResults, topicQuery); }}
       /> 
       <TopicList 
-        topicResults={topicResults.results}
-        morePresent={moreCanBeFetched}
-        onListEndReached={loadMoreTopics}
+        loading={loading}
+        topicResults={topicResults}
+        onFetchMorePressed={loadNextTopics}
+        onListEndReached={loadNextTopics}
       />
     </div>
   );

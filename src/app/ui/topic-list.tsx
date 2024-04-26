@@ -1,20 +1,23 @@
 "use client";
 
-import { useEffect, useState} from "react";
+import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import Spinner from "./spinner";
 import { ScrollToTop } from "./scroll-to-top";
 import { TopicResult } from "../lib/models/topic";
-import GroupedTopicDisplay, { GroupedTopics } from "./grouped-topic-display";
+import TopicDisplay from "./topic-display";
+import { Results } from "../lib/models/results";
 
 
 export default function TopicList({ 
-  topicResults, 
-  morePresent,
+  loading,
+  topicResults,  
+  onFetchMorePressed,
   onListEndReached,
  } : { 
-  topicResults: TopicResult[],
-  morePresent: boolean,
+  loading: boolean,
+  topicResults: Results<TopicResult>,
+  onFetchMorePressed: () => void,
   onListEndReached: () => void,
 }) {
   
@@ -26,69 +29,51 @@ export default function TopicList({
     }
   }, [inView])
 
-  const [groupedTopics, setGroupedTopics] = useState<GroupedTopics>({});
-
-  useEffect(() => {
-    // group topics according to the topic batch they belong to
-    const newGroupedTopics: GroupedTopics = {};
-    for (const topic of topicResults) {
-      if (!topic.batch_id || !topic.batch_query) {
-        continue;
-      }
-
-      if (!newGroupedTopics[topic.batch_id]) {
-        newGroupedTopics[topic.batch_id] = {
-          query: topic.batch_query,
-          articleSum: topic.count!,
-          topics: [topic],
-        }
-      } else {
-        newGroupedTopics[topic.batch_id] = {
-          ...newGroupedTopics[topic.batch_id],
-          articleSum: newGroupedTopics[topic.batch_id].articleSum + topic.count!,
-          topics: [...newGroupedTopics[topic.batch_id].topics, topic],
-        };
-      }
-    }
-
-    // normalize topic article counts
-    for (const key in newGroupedTopics) {
-      const topics = newGroupedTopics[key].topics;
-      topics.forEach(topic => topic.normalizedCount = topic.count! / newGroupedTopics[key].articleSum);
-    }
-
-    setGroupedTopics(newGroupedTopics);
-
-  }, [topicResults]);
 
   return (
-    <div className="flex flex-col items-center gap-4 mb-24 w-full">
-      {
-        Object.keys(groupedTopics).map(batchId => (
-          groupedTopics[batchId].topics.length > 0 &&
+    <div className="mt-12 mb-12 w-full flex flex-col items-center gap-4">
+      {topicResults.total > 0 ? 
+        <>
+          <div className="flex flex-col items-center sm:flex-row sm:justify-between w-full">
+            <p className="text-md text-gray-500 text-left px-4">
+              Fetched top {topicResults.results.length}/{topicResults.total} topics
+            </p>
+            {topicResults.total > topicResults.results.length ?
+              <button 
+                className="text-md text-gray-500 px-2 py-1 rounded-md bg-gray-300 hover:bg-blue-500 hover:text-white"
+                onClick={onFetchMorePressed}
+              >Fetch more</button> 
+              :
+              <p
+                className="text-md text-gray-500"
+              >No more elements to fetch.</p>
+            }
+          </div>
+          {
+            <TopicDisplay
+              topics={topicResults.results} 
+            />
+          }
+          <ScrollToTop />
 
-          <GroupedTopicDisplay
-            key={batchId}
-            groupedTopic={groupedTopics[batchId]} 
-          />
-        ))
-      }
-      <ScrollToTop />
-
-      {/* show loading element if there are more elements to load */}
-      {morePresent ? 
-        <div className="p-12 flex flex-col items-center gap-4 text-lg text-gray-600">
-          <Spinner />
-          <div ref={ref} >Loading</div>
-        </div>
+          {/* end of list */}
+          {topicResults.total > topicResults.results.length ?
+            <div className="p-12 flex flex-col items-center gap-4 text-lg text-gray-600">
+              <Spinner />
+              <div ref={ref}>Loading</div>
+            </div>
+            :
+            <p className="p-12 text-center text-lg text-gray-600">That's it, you reached the end!</p>
+          }
+        </>
         :
-        (
-          // if are no more elements, but there were some, show the end element
-          topicResults.length > 0 ?
-          <div className="p-12 text-center text-lg text-gray-600">That's it, you reached the end!</div>
+        (loading ?
+          <div className="p-12 flex flex-col items-center gap-4 text-lg text-gray-600">
+            <Spinner />
+            <div ref={ref}>Loading</div>
+          </div>
           :
-          // there are no more articles, and there were also none before.
-          <div className="p-12 text-center text-lg text-gray-600">No topics found.</div>
+          <p className="p-12 text-center text-lg text-gray-600">No topics found.</p>
         )
       }
     </div>

@@ -4,11 +4,10 @@ import { TopicResult } from "../lib/models/topic";
 import TopicsBarChart from "./topic-bar-chart";
 import TopicDetails from "./topic-details";
 import { useCallback, useEffect, useState } from "react";
-import TopicsLabelView from "./topic-label-view";
 import clsx from "clsx";
 import { ChevronDown, ChevronUp } from "./chevrons";
-import { TopicBatchArticleQuery, TopicBatchResult } from "../lib/models/topic-batch";
-import TopicsBatchLabelView from "./topic-batch-label-view";
+import { TopicBatchResult } from "../lib/models/topic-batch";
+import TopicsLabelView from "./topic-label-view";
 import searchTopics from "../lib/service/topic-search";
 import { TopicQuery } from "../lib/models/topic-query";
 import { Results } from "../lib/models/results";
@@ -127,7 +126,7 @@ export default function TopicBatchDisplay({
               />
 
               {labelViewToggled &&
-                <TopicsBatchLabelView topics={topicResults.results} />
+                <TopicsLabelView topics={topicResults.results} />
               }
             </div>
 

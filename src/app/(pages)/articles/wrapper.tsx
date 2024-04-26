@@ -24,98 +24,13 @@ export default function Wrapper({
   initialArticleQuery: ArticleQuery,
 }) {
 
-  // const [categoryResults, setCategoryResults] = useState<Results<CategoryResult>>();
-  // const [categoryResults, setCategoryResults] = useState<Results<CategoryResult>>();
-
-  // useEffect(() => {
-  //   (async () => {
-  //     setCategoryResults(await fetchCategories());
-  //   })();
-  // }, []);
-
-  // const [articleResults, setArticleResults] = useState<ArticleResults>({
-  // const [articleResults, setArticleResults] = useState<Results<ArticleResult>>({
-  //   total: 0,
-  //   results: [],
-  // });
   const [articleResults, setArticleResults] = useState<Results<ArticleResult>>(initialArticles);
-
-  // start at -1 so incrementing it when encountering the end of the list gives page '0', the first page to fetch
-  // const [articleQuery, setArticleQuery] = useState<ArticleQuery>({
-  //   page: -1,
-  //   page_size: 20,
-  // });
   const [articleQuery, setArticleQuery] = useState<ArticleQuery>(initialArticleQuery);
-
-  // const [articleQuery, setArticleQuery] = useState<ArticleQuery>(() => {
-  //   const params = new URL(window.location.href).searchParams;
-
-  //   try {
-  //     const newArticleQuery: ArticleQuery = fromQueryParams(params);
-  //     console.log("built query", newArticleQuery);
-
-  //     if (newArticleQuery.page === undefined) {
-  //       newArticleQuery.page = -1;
-  //     } else {
-  //       // so the loading increment part works
-  //       newArticleQuery.page -= 1;
-  //     }
-
-  //     if (newArticleQuery.page_size === undefined) {
-  //       newArticleQuery.page_size = 20;
-  //     }
-
-  //     return newArticleQuery;
-  //   } catch (e) {
-  //     // TODO: error handling
-  //     console.error(e);
-  //     return {
-  //       page: -1,
-  //       page_size: 20,
-  //     }
-  //   }
-  // });
-
-  // TODO: build query from URL params 
-  // useEffect(() => {
-  //   console.log("params changed");
-
-  //   const params = new URL(window.location.href).searchParams;
-
-  //   try {
-  //     const newArticleQuery: ArticleQuery = fromQueryParams(params);
-  //     console.log("built query", newArticleQuery);
-      
-  //     setArticleQuery(newArticleQuery);
-  //   } catch (e) {
-  //     // TODO: error handling
-  //     console.error(e);
-  //   }
-  // }, []);
-
-
-  // useEffect(() => {
-
-  //   const params = new URLSearchParams(articleQuery as Record<string, string>);
-
-  //   const path = `/articles?${params.toString()}`;
-  //   console.log(path);
-
-  //   const fromPath = new URLSearchParams(path);
-  //   console.log(fromPath);
-
-  // }, [articleQuery]);
-
   const [moreCanBeFetched, setMoreCanBeFetched] = useState(true);
 
   const searchWithQuery = useCallback(
     useDebouncedCallback(
-      // async (prevArticleResults: ArticleResults, query: ArticleQuery) => {
       async (prevArticleResults: Results<ArticleResult>, query: ArticleQuery) => {
-
-        if (query.page === -1) {
-          return;
-        }
 
         if (
           // there is nothing more to load
@@ -142,7 +57,6 @@ export default function Wrapper({
             // replace the articles
             setArticleResults(fetched);
           } 
-          // setFetchedCount(fetched.results.length);
           setMoreCanBeFetched(true);
 
         } catch (error) {
@@ -152,11 +66,6 @@ export default function Wrapper({
     },
     800,
   ), []);
-
-  // initial load
-  // useEffect(() => {
-  //   searchWithQuery(articleResults, articleQuery); 
-  // }, [])
 
   // debug
   useEffect(() => {

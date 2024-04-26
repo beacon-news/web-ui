@@ -4,24 +4,15 @@ import { TopicResult } from "../lib/models/topic";
 import TopicsBarChart from "./topic-bar-chart";
 import TopicDetails from "./topic-details";
 import { useEffect, useState } from "react";
-import TopicsLabelView from "./topic-label-view";
 import clsx from "clsx";
 import { ChevronDown, ChevronUp } from "./chevrons";
-import { TopicBatchArticleQuery } from "../lib/models/topic-batch";
+import TopicsLabelView from "./topic-label-view";
 
-export type GroupedTopic = { 
-  query: TopicBatchArticleQuery,
-  articleSum: number,
-  topics: (TopicResult & { normalizedCount?: number })[],
-};
-export type GroupedTopics = {
-  [key: string]: GroupedTopic
-};
 
-export default function GroupedTopicDisplay({ 
-  groupedTopic,
+export default function TopicDisplay({ 
+  topics,
  } : { 
-  groupedTopic: GroupedTopic,
+  topics: TopicResult[],
 }) {
 
   const [barChartToggled, setBarChartToggled] = useState(false);
@@ -30,30 +21,21 @@ export default function GroupedTopicDisplay({
 
   useEffect(() => {
     // show topic details if there is only 1 topic
-    if (groupedTopic.topics.length === 1) {
+    if (topics.length === 1) {
       setListViewToggled(true);
     }
-  }, [groupedTopic]);
+  }, [topics]);
 
 
   return (
-    groupedTopic.topics.length > 0 &&
+    topics.length > 0 &&
     <div 
-      className="w-full my-12"
+      className="w-full"
     >
-      <hr className="border-slate-300"></hr>
-      <p
-        className="text-lg my-4"
-      >Topics between 
-        <span className="text-gray-600"> {groupedTopic.query?.publish_date.start.toDateString()} </span>
-        and 
-        <span className="text-gray-600"> {groupedTopic.query?.publish_date.end.toDateString()} </span>
-      </p>
-
       <div className="flex flex-col gap-4">
 
         {/* only show visualizations if there are at least 2 topics to compare */}
-        {groupedTopic.topics.length > 1 ?
+        {topics.length > 1 ?
           <>
             <div>
               <ToggleButton 
@@ -67,7 +49,7 @@ export default function GroupedTopicDisplay({
               />
 
               {labelViewToggled &&
-                <TopicsLabelView groupedTopic={groupedTopic} />
+                <TopicsLabelView topics={topics} />
               }
             </div>
 
@@ -83,7 +65,7 @@ export default function GroupedTopicDisplay({
               />
 
               {barChartToggled &&
-                <TopicsBarChart topics={groupedTopic.topics} />
+                <TopicsBarChart topics={topics} />
               }
             </div>
           </>
@@ -105,7 +87,7 @@ export default function GroupedTopicDisplay({
           {listViewToggled &&
             <div 
               className="mt-8 flex flex-col gap-8">
-              {groupedTopic.topics.map((topic) => <TopicDetails key={topic.id} topic={topic} />)} 
+              {topics.map((topic) => <TopicDetails key={topic.id} topic={topic} />)} 
             </div>
           }
         </div>

@@ -44,7 +44,7 @@ export const ScrollToTop = () => {
       >
         <ChevronUp 
           className="h-12 w-12 p-1 text-gray-500 rounded-md bg-gray-200 
-          shadow-lg shadow-gray-300 hover:bg-gray-400 hover:cursor-pointer hover:text-white" 
+          shadow-lg shadow-gray-500 hover:bg-gray-400 hover:cursor-pointer hover:text-white" 
         />
       </button>
     </div>

@@ -9,7 +9,6 @@ import {
   Legend,
   TooltipItem,
 } from 'chart.js';
-import { GroupedTopic } from './grouped-topic-display';
 import { Bar } from 'react-chartjs-2';
 import { TopicResult } from '../lib/models/topic';
 

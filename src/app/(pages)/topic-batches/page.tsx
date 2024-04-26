@@ -1,7 +1,6 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
-import { TopicQuery } from "@/app/lib/models/topic-query";
 import { Results } from "@/app/lib/models/results";
 import { TopicBatchQuery } from "@/app/lib/models/topic-batch-query";
 import searchTopicBatches from "@/app/lib/service/topic-batch-search";
@@ -56,10 +55,16 @@ export default function Page() {
     800,
   ), []);
 
-  // fetch batches on load
+  // fetch first batch on load
   useEffect(() => {
-    loadNextBatch();
-    setInitialFetch(false);
+    (async() => {
+      await searchWithQuery(topicBatchResults, topicBatchQuery);
+      setTopicBatchQuery({
+        ...topicBatchQuery,
+        page: topicBatchQuery.page === undefined ? 0 : topicBatchQuery.page + 1,
+      });
+      setInitialFetch(false);
+    })();
   }, [])
 
   useEffect(() => {
@@ -96,7 +101,7 @@ export default function Page() {
       />  */}
       <TopicBatchList
         batchResults={topicBatchResults.results}
-        morePresent={initialFetch || topicBatchResults.total < topicBatchResults.results.length}
+        morePresent={initialFetch === true || (topicBatchResults.total < topicBatchResults.results.length)}
         onListEndReached={loadNextBatchIfPresent}
       />
     </div>
