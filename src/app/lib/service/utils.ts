@@ -3,7 +3,7 @@ export function urlSearchParamsFromObject(obj: Record<string, any>): URLSearchPa
 
   Object.entries(obj)
   .forEach(([key, value]) => {
-    if (value === undefined) {
+    if (value === undefined || value == null) {
       return;
     }
 

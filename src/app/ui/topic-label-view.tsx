@@ -1,4 +1,7 @@
+import clsx from "clsx";
 import { TopicResult } from "../lib/models/topic";
+import Link from "next/link";
+import { makeTopicArticlesLink } from "../(pages)/layout";
 
 
 export default function TopicsLabelView({
@@ -44,10 +47,13 @@ export default function TopicsLabelView({
   return (
     <div className="flex flex-row flex-wrap gap-2 justify-center items-center">
       {middleSort(normalizedTopics, compareTopicCounts).map(topic => (
-        <div
+        
+        <Link
           key={topic.id}
-          className="p-4 bg-slate-200 mb-4 rounded-md
-          text-center flex flex-col items-center gap-y-2"
+          href={makeTopicArticlesLink(topic)}
+          target="_blank"
+          className="p-4 bg-slate-200 mb-4 rounded-md text-center flex flex-col items-center gap-y-2 
+          hover:cursor-pointer hover:bg-slate-300"
           style={{
             // flex: `${1 + topic.normalizedCount! * 9} 1 ${5 + topic.normalizedCount! * 95}%`,
             // minWidth: `${100 + topic.normalizedCount! * 350}px`,
@@ -67,16 +73,16 @@ export default function TopicsLabelView({
             // backgroundColor: `hsl(120, ${topic.normalizedCount! * 100}%, ${60 + topic.normalizedCount! * 40}%)`,
           }}
         >
-          <p
-            style={{
-              // fontSize: `${topic.count! * 0.8}px`,
-              // fontSize: `${0.5 + topic.normalizedCount! * 9}rem`,
-              fontSize: `${0.4 + topic.normalizedCount! * 7}em`,
-              // fontSize: `${0.4 + topic.normalizedCount! * topics.length}em`,
-            }}
-          >{topic.topic}</p>
+            <p
+              style={{
+                // fontSize: `${topic.count! * 0.8}px`,
+                // fontSize: `${0.5 + topic.normalizedCount! * 9}rem`,
+                fontSize: `${0.4 + topic.normalizedCount! * 7}em`,
+                // fontSize: `${0.4 + topic.normalizedCount! * topics.length}em`,
+              }}
+            >{topic.topic}</p>
           <p className="text-sm text-gray-600 mt-4">{topic.count} articles</p>
-        </div>
+        </Link>
       ))}
     </div> 
   );

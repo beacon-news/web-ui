@@ -3,10 +3,12 @@
 import { TopicResult } from "../lib/models/topic";
 import TopicsBarChart from "./topic-bar-chart";
 import TopicDetails from "./topic-details";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import clsx from "clsx";
 import { ChevronDown, ChevronUp } from "./chevrons";
 import TopicsLabelView from "./topic-label-view";
+import { useRouter } from "next/navigation";
+import { makeTopicArticlesLink } from "../(pages)/layout";
 
 
 export default function TopicDisplay({ 
@@ -17,15 +19,12 @@ export default function TopicDisplay({
 
   const [barChartToggled, setBarChartToggled] = useState(false);
   const [labelViewToggled, setLabelViewToggled] = useState(true);
-  const [listViewToggled, setListViewToggled] = useState(false);
 
-  useEffect(() => {
-    // show topic details if there is only 1 topic
-    if (topics.length === 1) {
-      setListViewToggled(true);
-    }
-  }, [topics]);
+  const router = useRouter();
 
+  const onTopicClicked = (topic: TopicResult) => {
+    router.push(makeTopicArticlesLink(topic));
+  }
 
   return (
     topics.length > 0 &&
@@ -49,7 +48,10 @@ export default function TopicDisplay({
               />
 
               {labelViewToggled &&
-                <TopicsLabelView topics={topics} />
+                <TopicsLabelView 
+                  topics={topics}
+                  onTopicClicked={onTopicClicked}
+                />
               }
             </div>
 
@@ -73,23 +75,9 @@ export default function TopicDisplay({
           <p className="text-md text-gray-600">Visualizations are unavailable, because there is only a single topic.</p>
         }
 
-        <div>
-          <ToggleButton 
-            text="Topic details" 
-            toggled={listViewToggled}
-            className={clsx(
-              "px-4 py-2 text-md flex flex-row items-center justify-between hover:text-blue-500 hover:opacity-90",
-              listViewToggled && "text-blue-500"
-            )}
-            onToggle={() => setListViewToggled(!listViewToggled)} 
-          />
-
-          {listViewToggled &&
-            <div 
-              className="mt-8 flex flex-col gap-8">
-              {topics.map((topic) => <TopicDetails key={topic.id} topic={topic} />)} 
-            </div>
-          }
+        <div 
+          className="mt-8 flex flex-col gap-8">
+          {topics.map((topic) => <TopicDetails key={topic.id} topic={topic} />)} 
         </div>
       </div>
     </div>

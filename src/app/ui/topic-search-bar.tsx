@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { ArticleQuery, SortDirection } from "../lib/models/article-query";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import SearchBar from "./search-bar";
 import { TopicQuery } from "../lib/models/topic-query";
+import { SortDirection } from "../lib/models/sort-direction";
 
 
 export default function TopicSearchBar({
@@ -33,7 +33,7 @@ export default function TopicSearchBar({
   }
 
 
-  const setPublishDateStart = (date: Date | undefined) => {
+  const setCollectionDateStart = (date: Date | undefined) => {
     setTopicQuery({
       ...topicQuery,
       date_min: date,
@@ -41,7 +41,7 @@ export default function TopicSearchBar({
     });
   }
 
-  const setPublishDateEnd = (date: Date | undefined) => {
+  const setCollectionDateEnd = (date: Date | undefined) => {
     setTopicQuery({
       ...topicQuery,
       date_max: date,
@@ -49,10 +49,10 @@ export default function TopicSearchBar({
     });
   }
 
-  const setPublishDateSortDirection = (direction: SortDirection) => {
+  const setCollectionDateSortDirection = (direction: SortDirection) => {
     setTopicQuery({
       ...topicQuery,
-      sort_field: "query.publish_date.end",
+      sort_field: "date_max",
       sort_dir: direction,
       page: 0,
     });
@@ -81,7 +81,7 @@ export default function TopicSearchBar({
               selected={topicQuery.date_min} 
               placeholderText="Start Date"
               popperPlacement="top"
-              onChange={(date: Date) => setPublishDateStart(date)}
+              onChange={(date: Date) => setCollectionDateStart(date)}
             />
             <DatePicker 
               className="px-2 py-1 rounded-md text-sm mt-2 md:mt-0 md:mx-2
@@ -90,7 +90,7 @@ export default function TopicSearchBar({
               selected={topicQuery.date_max} 
               placeholderText="End Date"
               popperPlacement="top"
-              onChange={(date: Date) => setPublishDateEnd(date)}
+              onChange={(date: Date) => setCollectionDateEnd(date)}
             />
           </div>
 
@@ -98,11 +98,11 @@ export default function TopicSearchBar({
           {/* sort direction */}
           <div className="flex flex-col md:flex-row md:justify-evenly md:items-center gap-2 md:gap-3">
             <div className="text-sm text-gray-600 p-2 flex gap-x-4">
-              <label htmlFor="publish-date-sort">Order by publish date:</label>
+              <label htmlFor="collection-date-sort">Order by publish date:</label>
               <select
-                id="publish-date-sort"
+                id="collection-date-sort"
                 value={topicQuery.sort_dir || "desc"}
-                onChange={(e) => setPublishDateSortDirection(e.target.value as SortDirection)}
+                onChange={(e) => setCollectionDateSortDirection(e.target.value as SortDirection)}
               >
                 <option value="desc">newest</option>
                 <option value="asc">oldest</option>

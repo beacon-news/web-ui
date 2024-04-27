@@ -6,19 +6,22 @@ import { ArticleResult } from "../lib/models/article";
 import { useInView } from "react-intersection-observer";
 import Spinner from "./spinner";
 import { ScrollToTop } from "./scroll-to-top";
+import { Results } from "../lib/models/results";
 
 
 export default function ArticleList({ 
   articleCountText,
   articleResults, 
-  moreArticlesPresent,
+  loading,
+  // moreArticlesPresent,
   onListEndReached,
   onCategoryClicked,
   onTopicClicked,
  } : { 
   articleCountText: string | undefined,
-  articleResults: ArticleResult[],
-  moreArticlesPresent: boolean,
+  articleResults: Results<ArticleResult>,
+  loading: boolean,
+  // moreArticlesPresent: boolean,
   onListEndReached: () => void,
   onCategoryClicked: (category: string) => void,
   onTopicClicked: (topic: string) => void,
@@ -35,43 +38,48 @@ export default function ArticleList({
   return (
     <div className="mb-24">
       <div className="mt-6 flex flex-col items-center">
-
-        {articleCountText &&  
-          <p className="text-sm text-gray-400 text-right w-full px-4">{articleCountText}</p>
-        }
-
-        {/* show the articles */}
-        {articleResults.length > 0 &&
+        {articleResults.total > 0 ?
           <>
-            <div className="mt-2 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 grid-flow-row grid-align-center">
-              {articleResults.map((article) => (
-                <div key={article.id} className="mt-4">
-                  <ArticleCard 
-                    article={article} 
-                    onCategoryClicked={onCategoryClicked}
-                    onTopicClicked={onTopicClicked}
-                  />
-                </div>
-              ))}
-            </div>
-            <ScrollToTop />
-          </>
-        }
+            {articleCountText &&  
+              <p className="text-sm text-gray-400 text-right w-full px-4">{articleCountText}</p>
+            }
 
-        {/* show loading element if there are more articles to load */}
-        {moreArticlesPresent ? 
-          <div className="p-12 flex flex-col items-center gap-4 text-lg text-gray-600">
-            <Spinner />
-            <div ref={ref}>Loading</div>
-          </div>
+            {/* show the articles */}
+            {articleResults.results.length > 0 &&
+              <>
+                <div className="mt-2 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 grid-flow-row grid-align-center">
+                  {articleResults.results.map((article) => (
+                    <div key={article.id} className="mt-4">
+                      <ArticleCard 
+                        article={article} 
+                        onCategoryClicked={onCategoryClicked}
+                        onTopicClicked={onTopicClicked}
+                      />
+                    </div>
+                  ))}
+                </div>
+                <ScrollToTop />
+              </>
+            }
+
+            {/* show loading element if there are more articles to load */}
+            {articleResults.total > articleResults.results.length ?
+              <div className="p-12 flex flex-col items-center gap-4 text-lg text-gray-600">
+                <Spinner />
+                <div ref={ref}>Loading</div>
+              </div>
+              :
+              <div className="p-12 text-center text-lg text-gray-600">That's it, you reached the end!</div>
+            }
+          </>
           :
-          (
-            // if are no more articles, but there were some, show the end element
-            articleResults.length > 0 ?
-            <div className="p-12 text-center text-lg text-gray-600">That's it, you reached the end!</div>
+          (loading ?
+            <div className="p-12 flex flex-col items-center gap-4 text-lg text-gray-600">
+              <Spinner />
+              <div ref={ref}>Loading</div>
+            </div>
             :
-            // there are no more articles, and there were also none before.
-            <div className="p-12 text-center text-lg text-gray-600">No articles found.</div>
+            <p className="p-12 text-center text-lg text-gray-600">No articles found.</p>
           )
         }
       </div>

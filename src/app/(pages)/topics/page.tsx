@@ -28,13 +28,13 @@ export default function Page() {
     useDebouncedCallback(
       async (prevTopicResults: Results<TopicResult>, query: TopicQuery) => { 
 
-        setLoading(true);
-
         if (prevTopicResults.total < query.page! * query.page_size!) {
           // there is nothing more to load
           setLoading(false);
           return;
         }
+
+        setLoading(true);
 
         try {
           const fetched = await searchTopics(query); 

@@ -15,6 +15,12 @@ export default function TopicDetails({
       >{topic.topic}</h2> 
       <div className="mt-4 px-4">
         <p className="text-md text-gray-700">There are {topic.count} articles with this topic.</p> 
+        {topic.batch_query &&  
+          <TopicDateText 
+            dateStart={topic.batch_query.publish_date.start} 
+            dateEnd={topic.batch_query.publish_date.end}
+          />
+        }
         <p className="text-md text-gray-700">Representative articles:</p> 
         <div
           className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3" 
@@ -53,4 +59,16 @@ export default function TopicDetails({
       </div>
     </div>
   );
+}
+
+const TopicDateText = ({dateStart, dateEnd} : {dateStart: Date, dateEnd: Date}) => {
+  return (
+    <p className="text-md text-gray-700">
+      This topic represents articles published between 
+      <span className="text-gray-800"> {dateStart.toDateString()} </span> 
+      and 
+      <span className="text-gray-800"> {dateEnd.toDateString()}</span>
+      .
+    </p>
+  )
 }

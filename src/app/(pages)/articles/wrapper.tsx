@@ -26,7 +26,8 @@ export default function Wrapper({
 
   const [articleResults, setArticleResults] = useState<Results<ArticleResult>>(initialArticles);
   const [articleQuery, setArticleQuery] = useState<ArticleQuery>(initialArticleQuery);
-  const [moreCanBeFetched, setMoreCanBeFetched] = useState(true);
+  // const [moreCanBeFetched, setMoreCanBeFetched] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const searchWithQuery = useCallback(
     useDebouncedCallback(
@@ -40,9 +41,12 @@ export default function Wrapper({
           ((query.search_type === "combined" || query.search_type === "semantic") && query.page! > 0)
         ) {
           // there is nothing more to load
-          setMoreCanBeFetched(false);
+          // setMoreCanBeFetched(false);
+          setLoading(false);
           return;
         }
+
+        setLoading(true);
 
         try {
           const fetched = await searchArticles(query); 
@@ -57,11 +61,13 @@ export default function Wrapper({
             // replace the articles
             setArticleResults(fetched);
           } 
-          setMoreCanBeFetched(true);
+          // setMoreCanBeFetched(true);
 
         } catch (error) {
           // TODO: set error handling, propagate it up
           throw error;
+        } finally {
+          setLoading(false);
         }
     },
     800,
@@ -78,6 +84,10 @@ export default function Wrapper({
   }
 
   const loadMoreArticles = () => {
+    // wait until the previous request is done
+    if (loading) {
+      return;
+    }
     const newQuery: ArticleQuery = {
       ...articleQuery,
       page: articleQuery.page === undefined ? 0 : articleQuery.page + 1,
@@ -144,8 +154,9 @@ export default function Wrapper({
       /> 
       <ArticleList 
         articleCountText={makeArticleCountText()}
-        articleResults={articleResults.results} 
-        moreArticlesPresent={moreCanBeFetched} 
+        articleResults={articleResults} 
+        loading={loading}
+        // moreArticlesPresent={moreCanBeFetched} 
         onListEndReached={loadMoreArticles}
         onCategoryClicked={onCategoryClicked}
         onTopicClicked={onTopicClicked}
