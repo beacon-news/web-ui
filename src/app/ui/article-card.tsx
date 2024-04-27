@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { ArticleResult } from '../lib/models/article';
+import { ArticleCategory, ArticleResult, ArticleTopic } from '../lib/models/article';
 import Tags from './tags';
 import { useRouter } from 'next/navigation';
 import { ChevronDown, ChevronUp } from './chevrons';
@@ -14,8 +14,8 @@ export default function ArticleCard(
   onTopicClicked,
 } : { 
   article: ArticleResult,
-  onCategoryClicked: (category: string) => void,
-  onTopicClicked: (topic: string) => void,
+  onCategoryClicked?: (category: ArticleCategory) => void,
+  onTopicClicked?: (topic: ArticleTopic) => void,
 }) {
 
   const router = useRouter();
@@ -46,7 +46,7 @@ export default function ArticleCard(
         <Tags 
           texts={article.categories!.map(category => category.name)}
           selected={article.categories!.map(_ => false)}
-          onToggled={(index, text, toggled) => onCategoryClicked(text)}
+          onToggled={onCategoryClicked ? (index, text, toggled) => onCategoryClicked(article.categories![index]) : undefined}
         />
       </div> 
     );
@@ -59,59 +59,61 @@ export default function ArticleCard(
       <Tags 
         texts={article.topics!.map(topic => topic.topic)}
         selected={article.topics!.map(_ => false)}
-        onToggled={(index, text, toggled) => onTopicClicked(text)}
+        onToggled={onTopicClicked ? (index, text, toggled) => onTopicClicked(article.topics![index]) : undefined}
       />
     </div> 
    );
   }
 
   return (
-    <div
-      className="bg-white shadow-md shadow-gray-300 rounded-lg break-inside-avoid-column"
-    >
-      <div 
-      className="pt-4 px-4 pb-2"
+    <div>
+      <div
+          className="bg-white shadow-md shadow-gray-300 rounded-lg break-inside-avoid-column"
       >
-        {
-        article.image ? 
-          <img 
-          src={article.image} 
-          alt={article.title} 
-          className="w-full h-2/5 object-cover rounded-lg" 
-          />
-        :
-          null
-        }
-        <div className="mt-8">
-          <h2 
-          className="text-xl font-bold hover:text-blue-500 hover:cursor-pointer" 
-          onClick={openArticle}
-          >{article.title}</h2>
-          <p className="mt-2">{article.paragraphs && article.paragraphs[0]}</p>
-          <p className="mt-2 text-sm text-gray-600">Source: {article.source}</p>
+        <div 
+        className="pt-4 px-4 pb-2"
+        >
           {
-          article.author && article.author.trim().length > 0 ? 
-            <p className="text-sm text-gray-600">Author: {article.author}</p>
+          article.image ? 
+            <img 
+            src={article.image} 
+            alt={article.title} 
+            className="w-full h-2/5 object-cover rounded-lg" 
+            />
           :
             null
           }
-          <p className="text-sm text-gray-600">Published on: {article.publish_date.toLocaleString()}</p>
-          {detailsOpen && renderDetails()}
+          <div className="mt-8">
+            <h2 
+            className="text-xl font-bold hover:text-blue-500 hover:cursor-pointer" 
+            onClick={openArticle}
+            >{article.title}</h2>
+            <p className="mt-2">{article.paragraphs && article.paragraphs[0]}</p>
+            <p className="mt-2 text-sm text-gray-600">Source: {article.source}</p>
+            {
+            article.author && article.author.trim().length > 0 ? 
+              <p className="text-sm text-gray-600">Author: {article.author}</p>
+            :
+              null
+            }
+            <p className="text-sm text-gray-600">Published on: {article.publish_date.toLocaleString()}</p>
+            {detailsOpen && renderDetails()}
+          </div>
         </div>
+        {detailsPresent() &&
+          (detailsOpen ?
+          <ChevronUp
+            className="h-7 w-full text-gray-400 rounded-b-md bg-gray-200 hover:bg-blue-600 hover:cursor-pointer hover:text-white" 
+            onClick={() => setDetailsOpen(!detailsOpen)}
+          />
+          :
+          <ChevronDown
+            className="h-7 w-full text-gray-400 rounded-b-md bg-gray-200 hover:bg-blue-600 hover:cursor-pointer hover:text-white" 
+            onClick={() => setDetailsOpen(!detailsOpen)}
+          />
+          )
+        }
       </div>
-      {detailsPresent() &&
-        (detailsOpen ?
-        <ChevronUp
-          className="h-7 w-full text-gray-400 rounded-b-md bg-gray-200 hover:bg-blue-600 hover:cursor-pointer hover:text-white" 
-          onClick={() => setDetailsOpen(!detailsOpen)}
-        />
-        :
-        <ChevronDown
-          className="h-7 w-full text-gray-400 rounded-b-md bg-gray-200 hover:bg-blue-600 hover:cursor-pointer hover:text-white" 
-          onClick={() => setDetailsOpen(!detailsOpen)}
-        />
-        )
-      }
     </div>
   );
 

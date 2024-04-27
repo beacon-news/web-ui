@@ -73,7 +73,7 @@ export default function TopicSearchBar({
           {/* count range */}
           {/* publish date range */}
           <div className="w-full flex flex-col md:flex-row md:items-center md:justify-center">
-            <p className="text-sm text-gray-600 md:mx-2">Publish date range:</p>
+            <p className="text-sm text-gray-600 md:mx-2">Topics from articles published between:</p>
             <DatePicker 
               className="px-2 py-1 rounded-md text-sm mt-2 md:mt-0 md:mx-2
               outline outline-1 outline-gray-200 bg-gray-50

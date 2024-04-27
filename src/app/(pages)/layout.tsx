@@ -4,7 +4,6 @@ import Link from "next/link";
 import clsx from "clsx";
 import { usePathname } from "next/navigation";
 import { Suspense } from "react";
-import { TopicResult } from "../lib/models/topic";
 
 const links = [
   { 
@@ -21,7 +20,9 @@ const links = [
   },
 ];
 
-export const makeTopicArticlesLink = (topic: TopicResult) => `/topics/${topic.id}/articles`;
+export const makeTopicArticlesLink = (topic: { id: string }) => {
+  return `/topics/${topic.id}/articles`;
+}
 
 export default function Layout({ children }: { children: React.ReactNode }) {
 
@@ -32,9 +33,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <header className="flex flex-col items-center my-4 md:mt-8 md:mb-6 gap-y-4 md:gap-y-8">
+      <header className="flex flex-no-wrap fixed top-0 w-full z-10 bg-white shadow-md shadow-black/5 justify-between px-4 pt-4 pb-4">
         <h1 className="font-bold text-black text-3xl">Title here</h1>
-        <nav className="flex w-full justify-center gap-x-4 md:gap-x-8">
+        <nav className="flex justify-center gap-x-4">
           {links.map((link) => (
             <Link
               key={link.name}
@@ -49,7 +50,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           ))}
         </nav>
       </header>
-      <main className="w-full h-full flex flex-col mx-auto max-w-7xl px-4 py-2">
+      <main className="w-full h-full flex flex-col mx-auto max-w-7xl px-4 md:mt-28">
         <Suspense fallback={<div className="w-full h-full mx-auto text-lg">Loading...</div>}>
         {children}
         </Suspense>

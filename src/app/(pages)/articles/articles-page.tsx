@@ -1,20 +1,18 @@
 "use client";
-import { ArticleQuery, fromQueryParams } from "@/app/lib/models/article-query";
-// import { ArticleResults } from "@/app/lib/models/article";
+import { ArticleQuery } from "@/app/lib/models/article-query";
 import searchArticles from "@/app/lib/service/article-search";
-import ArticleList from "@/app/ui/article-list";
+import ArticlesDisplay from "@/app/ui/articles-display";
 import ArticleSearchBar from "@/app/ui/article-search-bar";
-import { Suspense, useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
-import fetchCategories from "@/app/lib/service/category-search";
-// import { CategoryResults } from "@/app/lib/models/category";
-import { useParams, useRouter } from "next/navigation";
 import { Results } from "@/app/lib/models/results";
 import { CategoryResult } from "@/app/lib/models/category";
-import { ArticleResult } from "@/app/lib/models/article";
+import { ArticleCategory, ArticleResult, ArticleTopic } from "@/app/lib/models/article";
+import { useRouter } from "next/navigation";
+import { makeTopicArticlesLink } from "../layout";
 
 
-export default function Wrapper({
+export default function ArticlesPage({
   categoryResults,
   initialArticles,
   initialArticleQuery,
@@ -26,7 +24,6 @@ export default function Wrapper({
 
   const [articleResults, setArticleResults] = useState<Results<ArticleResult>>(initialArticles);
   const [articleQuery, setArticleQuery] = useState<ArticleQuery>(initialArticleQuery);
-  // const [moreCanBeFetched, setMoreCanBeFetched] = useState(true);
   const [loading, setLoading] = useState(false);
 
   const searchWithQuery = useCallback(
@@ -41,7 +38,6 @@ export default function Wrapper({
           ((query.search_type === "combined" || query.search_type === "semantic") && query.page! > 0)
         ) {
           // there is nothing more to load
-          // setMoreCanBeFetched(false);
           setLoading(false);
           return;
         }
@@ -61,7 +57,6 @@ export default function Wrapper({
             // replace the articles
             setArticleResults(fetched);
           } 
-          // setMoreCanBeFetched(true);
 
         } catch (error) {
           // TODO: set error handling, propagate it up
@@ -99,10 +94,10 @@ export default function Wrapper({
 
   const [searchOptionsOpen, setSearchOptionsOpen] = useState(false);
 
-  const onCategoryClicked = (text: string) => {
+  const onCategoryClicked = (category: ArticleCategory) => {
     const newQuery: ArticleQuery = {
       ...articleQuery,
-      categories: text,
+      categories: category.name,
     };
     setArticleQuery(newQuery);
     searchWithQuery(articleResults, newQuery);
@@ -110,15 +105,19 @@ export default function Wrapper({
     scrollToTop();
   }
 
-  const onTopicClicked = (text: string) => {
+  const onTopicClicked = (topic: ArticleTopic) => {
     const newQuery: ArticleQuery = {
       ...articleQuery,
-      topic: text,
+      topic: topic.topic,
     };
     setArticleQuery(newQuery);
     searchWithQuery(articleResults, newQuery);
     setSearchOptionsOpen(true);
     scrollToTop();
+  }
+
+  const navigateToTopicArticles = (topic: ArticleTopic) => {
+    window.open(makeTopicArticlesLink(topic), '_blank');
   }
 
   const scrollToTop = () => {
@@ -143,7 +142,7 @@ export default function Wrapper({
   }
 
   return (
-    <div className="w-full flex flex-col items-center">
+    <div className="w-full flex flex-col items-center gap-4">
       <ArticleSearchBar
         categories={categoryResults.results.map(cat => cat.name).sort()}
         articleQuery={articleQuery}
@@ -152,14 +151,14 @@ export default function Wrapper({
         optionsOpen={searchOptionsOpen}
         setOptionsOpen={setSearchOptionsOpen}
       /> 
-      <ArticleList 
+      <ArticlesDisplay 
         articleCountText={makeArticleCountText()}
         articleResults={articleResults} 
         loading={loading}
-        // moreArticlesPresent={moreCanBeFetched} 
         onListEndReached={loadMoreArticles}
         onCategoryClicked={onCategoryClicked}
-        onTopicClicked={onTopicClicked}
+        // onTopicClicked={onTopicClicked}
+        onTopicClicked={navigateToTopicArticles}
       />
     </div>
   );

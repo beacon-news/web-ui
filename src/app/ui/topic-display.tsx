@@ -23,6 +23,7 @@ export default function TopicDisplay({
   const router = useRouter();
 
   const onTopicClicked = (topic: TopicResult) => {
+    
     router.push(makeTopicArticlesLink(topic));
   }
 
@@ -50,7 +51,6 @@ export default function TopicDisplay({
               {labelViewToggled &&
                 <TopicsLabelView 
                   topics={topics}
-                  onTopicClicked={onTopicClicked}
                 />
               }
             </div>

@@ -1,3 +1,5 @@
+import clsx from "clsx";
+
 export default function Tags({
   texts, 
   selected = undefined,
@@ -11,12 +13,11 @@ export default function Tags({
   return (
     <div className="flex flex-row gap-3 flex-wrap">
       {texts.map((text, index) => (
-        <Tag text={text} key={index} selected={selected?.[index]} onToggled={(toggled) => onToggled?.(index, text, toggled)} />
-        // <p 
-        // key={index} 
-        // className={`text-sm text-gray-600 bg-slate-300 px-2 py-1 rounded-md 
-        // ${onToggled !== undefined ? "hover:cursor-pointer hover:bg-teal-800 hover:text-white" : ""}`} 
-        // onClick={() => onToggled?.(index, text)}>{text}</p>
+        <Tag 
+          text={text} 
+          key={index} 
+          selected={selected?.[index]} 
+          onToggled={onToggled ? (toggled) => onToggled(index, text, toggled) : undefined} />
       ))}
     </div> 
   )
@@ -25,7 +26,7 @@ export default function Tags({
 export function Tag({
   text,
   selected = false,
-  onToggled = () => {},
+  onToggled = undefined,
 } : {
   text: string,
   selected?: boolean,
@@ -34,12 +35,15 @@ export function Tag({
 
   return (
     <p 
-    className={`text-sm ${selected ? "bg-teal-800 text-white outline-teal-900" : "text-gray-600 bg-slate-300"}
-    px-2 py-1 rounded-md
-    hover:cursor-pointer hover:bg-teal-800 hover:text-white hover:opacity-90`} 
+    className={clsx("text-sm px-2 py-1 rounded-md", 
+    selected ? "bg-teal-800 text-white outline-teal-900" : "text-gray-600 bg-slate-300",
+    {
+      "hover:cursor-pointer hover:bg-teal-800 hover:text-white hover:opacity-90" : onToggled !== undefined
+    },
+    )}
     onClick={
       () => {
-        onToggled(!selected)
+        onToggled?.(!selected)
       }
     }>{text}</p>
   );

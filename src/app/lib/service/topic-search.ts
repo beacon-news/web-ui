@@ -4,6 +4,10 @@ import { TopicResult } from "../models/topic";
 import { urlSearchParamsFromObject } from "./utils";
 import { Results } from "../models/results";
 
+// revalidate cache (only on server side components) every 30 minutes
+// const REVALIDATE_TIME_SECONDS = 1800;
+
+// TODO: use next cache to cache requests
 
 export default async function searchTopics(query: TopicQuery): Promise<Results<TopicResult>> {
 
@@ -11,6 +15,9 @@ export default async function searchTopics(query: TopicQuery): Promise<Results<T
 
   const res = await fetch(`http://${SEARCH_API_URL}/api/v1/search/topics?${params.toString()}`, {
     method: 'GET',
+    // next: {
+    //   revalidate: REVALIDATE_TIME_SECONDS,
+    // }
   })
 
   if (!res.ok) {
