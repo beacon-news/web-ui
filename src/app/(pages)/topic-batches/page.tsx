@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { Results } from "@/app/lib/models/results";
 import { TopicBatchQuery } from "@/app/lib/models/topic-batch-query";
@@ -22,8 +22,7 @@ export default function Page() {
 
   const [initialFetch, setInitialFetch] = useState(true);
 
-  const searchWithQuery = useCallback(
-    useDebouncedCallback(
+  const searchWithQuery = useDebouncedCallback(
       async (prevResults: Results<TopicBatchResult>, query: TopicBatchQuery) => {
 
         if (prevResults.total < query.page! * query.page_size!) {
@@ -53,7 +52,7 @@ export default function Page() {
         }
     },
     800,
-  ), []);
+  );
 
   // fetch first batch on load
   useEffect(() => {
@@ -65,7 +64,7 @@ export default function Page() {
       });
       setInitialFetch(false);
     })();
-  }, [])
+  }, []);
 
   useEffect(() => {
     console.log(topicBatchQuery)

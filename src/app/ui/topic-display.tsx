@@ -22,11 +22,6 @@ export default function TopicDisplay({
 
   const router = useRouter();
 
-  const onTopicClicked = (topic: TopicResult) => {
-    
-    router.push(makeTopicArticlesLink(topic));
-  }
-
   return (
     topics.length > 0 &&
     <div 

@@ -54,7 +54,7 @@ export default function ArticlesDisplay({
                 <div ref={ref}>Loading</div>
               </div>
               :
-              <div className="mt-6 p-12 text-center text-lg text-gray-600">That's it, you reached the end!</div>
+              <div className="mt-6 p-12 text-center text-lg text-gray-600">That&apos;s all, you reached the end!</div>
             }
           </>
           :

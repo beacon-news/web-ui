@@ -3,12 +3,11 @@ import { ArticleQuery } from "@/app/lib/models/article-query";
 import searchArticles from "@/app/lib/service/article-search";
 import ArticlesDisplay from "@/app/ui/articles-display";
 import ArticleSearchBar from "@/app/ui/article-search-bar";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { Results } from "@/app/lib/models/results";
 import { CategoryResult } from "@/app/lib/models/category";
 import { ArticleCategory, ArticleResult, ArticleTopic } from "@/app/lib/models/article";
-import { useRouter } from "next/navigation";
 import { makeTopicArticlesLink } from "../layout";
 
 
@@ -26,8 +25,7 @@ export default function ArticlesPage({
   const [articleQuery, setArticleQuery] = useState<ArticleQuery>(initialArticleQuery);
   const [loading, setLoading] = useState(false);
 
-  const searchWithQuery = useCallback(
-    useDebouncedCallback(
+  const searchWithQuery = useDebouncedCallback(
       async (prevArticleResults: Results<ArticleResult>, query: ArticleQuery) => {
 
         if (
@@ -66,7 +64,7 @@ export default function ArticlesPage({
         }
     },
     800,
-  ), []);
+  );
 
   // debug
   useEffect(() => {

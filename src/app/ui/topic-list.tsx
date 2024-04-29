@@ -63,7 +63,7 @@ export default function TopicList({
               <div ref={ref}>Loading</div>
             </div>
             :
-            <p className="p-12 text-center text-lg text-gray-600">That's it, you reached the end!</p>
+            <p className="p-12 text-center text-lg text-gray-600">That&apos;s all, you reached the end!</p>
           }
         </>
         :

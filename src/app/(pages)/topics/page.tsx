@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { TopicQuery } from "@/app/lib/models/topic-query";
 // import { TopicResults } from "@/app/lib/models/topic";
@@ -24,8 +24,7 @@ export default function Page() {
 
   const [loading, setLoading] = useState(true);
 
-  const searchWithQuery = useCallback(
-    useDebouncedCallback(
+  const searchWithQuery = useDebouncedCallback(
       async (prevTopicResults: Results<TopicResult>, query: TopicQuery) => { 
 
         if (prevTopicResults.total < query.page! * query.page_size!) {
@@ -60,7 +59,7 @@ export default function Page() {
         }
     },
     800,
-  ), []);
+  );
 
   // fetch topics on load
   useEffect(() => {

@@ -48,7 +48,7 @@ export default function TopicBatchList({
         (
           // if are no more elements, but there were some, show the end element
           batchResults.length > 0 ?
-          <div className="p-12 text-center text-lg text-gray-600">That's all, you reached the end!</div>
+          <div className="p-12 text-center text-lg text-gray-600">That&apos;s all, you reached the end!</div>
           :
           // there are no more articles, and there were also none before.
           <div className="p-12 text-center text-lg text-gray-600">No topic batches found.</div>

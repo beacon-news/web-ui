@@ -6,6 +6,7 @@ import { ArticleCategory, ArticleResult, ArticleTopic } from '../lib/models/arti
 import Tags from './tags';
 import { useRouter } from 'next/navigation';
 import { ChevronDown, ChevronUp } from './chevrons';
+import Image from 'next/image';
 
 export default function ArticleCard(
 { 
@@ -75,10 +76,17 @@ export default function ArticleCard(
         >
           {
           article.image ? 
+            // <Image 
+            // src={article.image}
+            // alt={"image of: " + article.title}
+            // width={200}
+            // height={200}
+            // className="w-full h-2/5 object-cover rounded-lg" 
+            // />
             <img 
-            src={article.image} 
-            alt={article.title} 
-            className="w-full h-2/5 object-cover rounded-lg" 
+              src={article.image} 
+              alt={article.title} 
+              className="w-full h-2/5 object-cover rounded-lg" 
             />
           :
             null
