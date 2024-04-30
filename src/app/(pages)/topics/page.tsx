@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { TopicQuery } from "@/app/lib/models/topic-query";
-// import { TopicResults } from "@/app/lib/models/topic";
 import searchTopics from "@/app/lib/service/topic-search";
 import TopicSearchBar from "@/app/ui/topic-search-bar";
 import TopicList from "@/app/ui/topic-list";
@@ -26,12 +25,6 @@ export default function Page() {
 
   const searchWithQuery = useDebouncedCallback(
       async (prevTopicResults: Results<TopicResult>, query: TopicQuery) => { 
-
-        if (prevTopicResults.total < query.page! * query.page_size!) {
-          // there is nothing more to load
-          setLoading(false);
-          return;
-        }
 
         setLoading(true);
 
@@ -80,8 +73,8 @@ export default function Page() {
   }
 
   const loadNextTopics = () => {
-    // wait until the previous request is done
-    if (loading) {
+    // don't load more if there's nothing more to load
+    if (topicResults.total <= topicResults.results.length) {
       return;
     }
     searchWithQuery(topicResults, topicQuery);

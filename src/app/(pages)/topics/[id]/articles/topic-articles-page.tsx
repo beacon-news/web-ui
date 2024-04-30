@@ -45,8 +45,8 @@ export default function TopicArticlesPage({
   []);
 
   const loadMoreArticles = () => {
-    // wait until the previous request is done
-    if (loading) {
+    // don't load more if there is nothing more to load
+    if (articleResults.total <= articleResults.results.length) {
       return;
     }
     const newQuery: ArticleQuery = {

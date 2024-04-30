@@ -20,15 +20,12 @@ export default function Page() {
     page_size: 20,
   });
 
-  const [initialFetch, setInitialFetch] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   const searchWithQuery = useDebouncedCallback(
       async (prevResults: Results<TopicBatchResult>, query: TopicBatchQuery) => {
 
-        if (prevResults.total < query.page! * query.page_size!) {
-          // there is nothing more to load
-          return;
-        }
+        setLoading(true);
 
         try {
           const fetched = await searchTopicBatches(query); 
@@ -49,44 +46,41 @@ export default function Page() {
         } catch (error) {
           // TODO: set error handling, propagate it up
           throw error;
+        } finally {
+          setLoading(false);
         }
     },
-    800,
+    500,
   );
 
   // fetch first batch on load
   useEffect(() => {
-    (async() => {
-      await searchWithQuery(topicBatchResults, topicBatchQuery);
-      setTopicBatchQuery({
-        ...topicBatchQuery,
-        page: topicBatchQuery.page === undefined ? 0 : topicBatchQuery.page + 1,
-      });
-      setInitialFetch(false);
-    })();
+    searchWithQuery(topicBatchResults, topicBatchQuery);
+    setTopicBatchQuery({
+      ...topicBatchQuery,
+      page: topicBatchQuery.page === undefined ? 0 : topicBatchQuery.page + 1,
+    });
   }, []);
 
   useEffect(() => {
     console.log(topicBatchQuery)
   }, [topicBatchQuery])
 
-  const setTopicBatchQueryAndSearch = (query: TopicBatchQuery) => {
-    setTopicBatchQuery(query);
-    searchWithQuery(topicBatchResults, query);
-  }
+  // const setTopicBatchQueryAndSearch = (query: TopicBatchQuery) => {
+  //   setTopicBatchQuery(query);
+  //   searchWithQuery(topicBatchResults, query);
+  // }
 
   const loadNextBatch = () => {
+    // don't load more if there is nothing more to load
+    if (topicBatchResults.total <= topicBatchResults.results.length) {
+      return;
+    }
     searchWithQuery(topicBatchResults, topicBatchQuery);
     setTopicBatchQuery({
       ...topicBatchQuery,
       page: topicBatchQuery.page === undefined ? 0 : topicBatchQuery.page + 1,
     });
-  }
-
-  const loadNextBatchIfPresent = () => {
-    if (topicBatchResults.total > topicBatchResults.results.length) {
-      loadNextBatch();
-    }
   }
 
 
@@ -99,9 +93,9 @@ export default function Page() {
         onSearchPressed={() => { searchWithQuery(topicResults, topicQuery); }}
       />  */}
       <TopicBatchList
-        batchResults={topicBatchResults.results}
-        morePresent={initialFetch === true || (topicBatchResults.total < topicBatchResults.results.length)}
-        onListEndReached={loadNextBatchIfPresent}
+        batchResults={topicBatchResults}
+        loading={loading}
+        onListEndReached={loadNextBatch}
       />
     </div>
   );

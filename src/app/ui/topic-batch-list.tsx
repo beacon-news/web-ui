@@ -6,15 +6,16 @@ import Spinner from "./spinner";
 import { ScrollToTop } from "./scroll-to-top";
 import { TopicBatchResult } from "../lib/models/topic-batch";
 import TopicBatchDisplay from "./topic-batch-display";
+import { Results } from "../lib/models/results";
 
 
 export default function TopicBatchList({ 
   batchResults, 
-  morePresent,
+  loading,
   onListEndReached,
  } : { 
-  batchResults: TopicBatchResult[],
-  morePresent: boolean,
+  batchResults: Results<TopicBatchResult>,
+  loading: boolean,
   onListEndReached: () => void,
 }) {
   
@@ -28,32 +29,38 @@ export default function TopicBatchList({
 
   return (
     <div className="flex flex-col items-center gap-4 mb-24 w-full">
-      {
-        batchResults.map(topicBatch => (
-          <TopicBatchDisplay
-            key={topicBatch.id}
-            topicBatchResult={topicBatch}
-          />
-        ))
-      }
-      <ScrollToTop />
-
-      {/* show loading element if there are more elements to load */}
-      {morePresent ? 
-        <div className="p-12 flex flex-col items-center gap-4 text-lg text-gray-600">
-          <Spinner />
-          <div ref={ref}>Loading</div>
-        </div>
+      {batchResults.total > 0 ?
+        <>
+          {
+            batchResults.results.map(topicBatch => (
+              <TopicBatchDisplay
+                key={topicBatch.id}
+                topicBatchResult={topicBatch}
+              />
+            ))
+          }
+          <ScrollToTop />
+          
+          {/* show loading element if there are more articles to load */}
+          {batchResults.total > batchResults.results.length ?
+            <div className="mt-6 p-12 flex flex-col items-center gap-4 text-lg text-gray-600">
+              <Spinner />
+              <div ref={ref}>Loading</div>
+            </div>
+            :
+            <div className="mt-6 p-12 text-center text-lg text-gray-600">That&apos;s all, you reached the end!</div>
+          }
+        </>
         :
-        (
-          // if are no more elements, but there were some, show the end element
-          batchResults.length > 0 ?
-          <div className="p-12 text-center text-lg text-gray-600">That&apos;s all, you reached the end!</div>
+        (loading ?
+          <div className="p-12 flex flex-col items-center gap-4 text-lg text-gray-600">
+            <Spinner />
+            <div ref={ref}>Loading</div>
+          </div>
           :
-          // there are no more articles, and there were also none before.
           <div className="p-12 text-center text-lg text-gray-600">No topic batches found.</div>
         )
-      }
+      } 
     </div>
   );
 }
