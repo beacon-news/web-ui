@@ -1,5 +1,4 @@
 import 'dotenv/config';
 
-
-export const SEARCH_API_URL = process.env['NEXT_PUBLIC_SEARCH_API_URL'];
+export const SEARCH_API_URL = process.env.NEXT_PUBLIC_SEARCH_API_URL;
 
