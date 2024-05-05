@@ -20,6 +20,11 @@ export default async function Page(
     page: 0,
     page_size: 1,
   });
+
+  if (topicResults.results.length < 1) {
+    throw new Error("Topic not found"); 
+  }
+
   const topic = topicResults.results[0];
 
   const representativeArticlesQuery: ArticleQuery = {
