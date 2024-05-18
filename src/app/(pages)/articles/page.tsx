@@ -124,17 +124,6 @@ export default function Page() {
     scrollToTop();
   }
 
-  // const onTopicClicked = (topic: ArticleTopic) => {
-  //   const newQuery: ArticleQuery = {
-  //     ...articleQuery,
-  //     topic: topic.topic,
-  //   };
-  //   setArticleQuery(newQuery);
-  //   searchWithQuery(articleResults, newQuery);
-  //   setSearchOptionsOpen(true);
-  //   scrollToTop();
-  // }
-
   const navigateToTopicArticles = (topic: ArticleTopic) => {
     window.open(makeTopicArticlesLink(topic), '_blank');
   }
@@ -161,7 +150,7 @@ export default function Page() {
   }
 
   return (
-    <div className="w-full flex flex-col items-center gap-4">
+    <div className="w-full h-full flex flex-col items-center gap-4">
       <ArticleSearchBar
         categories={categoryResults.results.map(cat => cat.name).sort()}
         articleQuery={articleQuery}
@@ -176,7 +165,6 @@ export default function Page() {
         loading={loading}
         onListEndReached={loadMoreArticles}
         onCategoryClicked={onCategoryClicked}
-        // onTopicClicked={onTopicClicked}
         onTopicClicked={navigateToTopicArticles}
       />
     </div>

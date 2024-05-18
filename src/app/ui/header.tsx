@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { links } from "../(pages)/layout";
 import Link from "next/link";
 import clsx from "clsx";
+import AppTitle from "./app-title";
 
 
 export default function Header() {
@@ -24,8 +25,7 @@ export default function Header() {
             open={navVisible}
             onClick={() => setNavVisible(!navVisible)} 
           />
-
-          <h1 className="font-bold text-black text-3xl ml-4 md:ml-0">Title here</h1>
+          <AppTitle />
         </div>
 
         <nav className="hidden md:flex md:justify-center md:gap-x-4">

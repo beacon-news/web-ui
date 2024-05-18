@@ -59,7 +59,7 @@ export default function TopicArticlesPage({
 
 
   return (
-    <div className="w-full flex flex-col items-center gap-6">
+    <div className="w-full h-full flex flex-col items-center gap-6">
       <div className="flex flex-col items-center gap-4">
         <h2
           className=" text-2xl font-bold" 

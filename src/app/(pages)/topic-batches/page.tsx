@@ -66,11 +66,6 @@ export default function Page() {
     console.log(topicBatchQuery)
   }, [topicBatchQuery])
 
-  // const setTopicBatchQueryAndSearch = (query: TopicBatchQuery) => {
-  //   setTopicBatchQuery(query);
-  //   searchWithQuery(topicBatchResults, query);
-  // }
-
   const loadNextBatch = () => {
     // don't load more if there is nothing more to load
     if (topicBatchResults.total <= topicBatchResults.results.length) {
@@ -85,13 +80,7 @@ export default function Page() {
 
 
   return (
-    <div className="w-full flex flex-col items-center">
-      
-      {/* <TopicSearchBar
-        topicQuery={topicQuery}
-        setTopicQuery={setTopicQueryAndSearch}
-        onSearchPressed={() => { searchWithQuery(topicResults, topicQuery); }}
-      />  */}
+    <div className="w-full h-full flex flex-col items-center">
       <TopicBatchList
         batchResults={topicBatchResults}
         loading={loading}
