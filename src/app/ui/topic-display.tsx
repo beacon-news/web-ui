@@ -7,8 +7,6 @@ import { useState } from "react";
 import clsx from "clsx";
 import { ChevronDown, ChevronUp } from "./chevrons";
 import TopicsLabelView from "./topic-label-view";
-import { useRouter } from "next/navigation";
-import { makeTopicArticlesLink } from "../(pages)/layout";
 
 
 export default function TopicDisplay({ 
@@ -19,8 +17,6 @@ export default function TopicDisplay({
 
   const [barChartToggled, setBarChartToggled] = useState(false);
   const [labelViewToggled, setLabelViewToggled] = useState(true);
-
-  const router = useRouter();
 
   return (
     topics.length > 0 &&

@@ -1,4 +1,6 @@
+import Link from "next/link";
 import { TopicResult } from "../lib/models/topic";
+import { makeTopicArticlesLink } from "../(pages)/layout";
 
 export default function TopicDetails({
   topic,
@@ -12,7 +14,13 @@ export default function TopicDetails({
     >
       <h2 className="w-full bg-slate-700 text-white text-lg text-center py-2 mb-6
       rounded-t-md"
-      >{topic.topic}</h2> 
+      >
+        <Link
+          href={makeTopicArticlesLink({id: topic.id!})}
+          target="_blank"
+          className="hover:cursor-pointer hover:text-blue-200"
+        >{topic.topic}</Link>
+      </h2> 
       <div className="mt-4 px-4">
         <p className="text-md text-gray-700">There are {topic.count} articles with this topic.</p> 
         {topic.batch_query &&  

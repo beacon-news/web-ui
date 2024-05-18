@@ -76,13 +76,6 @@ export default function ArticleCard(
         >
           {
           article.image ? 
-            // <Image 
-            // src={article.image}
-            // alt={"image of: " + article.title}
-            // width={200}
-            // height={200}
-            // className="w-full h-2/5 object-cover rounded-lg" 
-            // />
             <img 
               src={article.image} 
               alt={article.title} 
