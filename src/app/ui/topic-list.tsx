@@ -11,7 +11,7 @@ import { Results } from "../lib/models/results";
 
 export default function TopicList({ 
   loading,
-  topicResults,  
+  topicResults,
   onFetchMorePressed,
   onListEndReached,
  } : { 
@@ -49,6 +49,11 @@ export default function TopicList({
               >No more elements to fetch.</p>
             }
           </div>
+          {/* <div className="flex flex-col items-center w-full">
+            {
+              Object.groupBy(topicResults, ({batchId}) => batchId).
+            } 
+          </div> */}
           {
             <TopicDisplay
               topics={topicResults.results} 

@@ -7,6 +7,9 @@ import TopicSearchBar from "@/app/ui/topic-search-bar";
 import TopicList from "@/app/ui/topic-list";
 import { Results } from "@/app/lib/models/results";
 import { TopicResult } from "@/app/lib/models/topic";
+import { Group } from "next/dist/shared/lib/router/utils/route-regex";
+import { TopicBatchQuery } from "@/app/lib/models/topic-batch-query";
+import { TopicBatchArticleQuery } from "@/app/lib/models/topic-batch";
 
 
 export default function Page() {
@@ -20,6 +23,14 @@ export default function Page() {
     page: 0,
     page_size: 10,
   });
+
+  type GroupedTopicBatch = {
+    [key: string]: {
+      shown: boolean,
+      query: TopicBatchArticleQuery,
+    }
+  }
+  const [topicBatches, setTopicBatches] = useState<GroupedTopicBatch>({});
 
   const [loading, setLoading] = useState(true);
 
@@ -84,6 +95,26 @@ export default function Page() {
     });
   }
 
+  // console.log(topicBatchIds)
+  // const batchIds = Object.groupBy(topicResults.results, topic => topic.batch_id!);
+  // const topicList = {
+  //   ...topicResults,
+  // }
+
+  useEffect(() => {
+
+    const newTopicBatches: GroupedTopicBatch = {};
+    for (const topic of topicResults.results) {
+      newTopicBatches[topic.batch_id!] = {
+        shown: true,
+        query: topic.batch_query!,
+      }
+    }
+
+    setTopicBatches(newTopicBatches);
+  }, [topicResults.results])
+
+
   return (
     <div className="w-full h-full flex flex-col items-center">
       <TopicSearchBar
@@ -91,9 +122,25 @@ export default function Page() {
         setTopicQuery={setTopicQueryAndSearch}
         onSearchPressed={() => { searchWithQuery(topicResults, topicQuery); }}
       /> 
+      <div>
+        {Object.keys(topicBatches).map(batch => (
+          <div 
+            key={batch}
+          >
+            <p>{batch}</p>
+            <p>{topicBatches[batch].query.publish_date.start.toString()}</p>
+            <p>{topicBatches[batch].query.publish_date.end.toString()}</p>
+            <button onClick={}>Toggle</button>
+          </div>
+        ))}
+      </div>
       <TopicList 
         loading={loading}
         topicResults={topicResults}
+        // topicResults={{
+        //   ...topicResults,
+        //   results: topicResults.results.filter(topic => topic.batch_id 
+        // }}
         onFetchMorePressed={loadNextTopics}
         onListEndReached={loadNextTopics}
       />
