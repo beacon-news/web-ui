@@ -35,9 +35,6 @@ export default function TopicArticlesPage({
             total: fetched.total,
             results: [...prevResults.results, ...fetched.results],
           });
-        } catch (error) {
-          // TODO: set error handling, propagate it up
-          throw error;
         } finally {
           setLoading(false);
         }
@@ -45,8 +42,8 @@ export default function TopicArticlesPage({
   []);
 
   const loadMoreArticles = () => {
-    // don't load more if there is nothing more to load
     if (articleResults.total <= articleResults.results.length) {
+      // there are no more articles to load
       return;
     }
     const newQuery: ArticleQuery = {

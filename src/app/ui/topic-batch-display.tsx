@@ -42,26 +42,18 @@ export default function TopicBatchDisplay({
         return;
       }
 
-      try {
-        const fetched = await searchTopics(query); 
+      const fetched = await searchTopics(query); 
 
-        if (query.page && query.page > 0) {
-          // append the topics
-          setTopicResults({
-            total: fetched.total,
-            results: [...prevTopicResults.results, ...fetched.results],
-          });
-        } else {
-          // replace the topics if it's the first page
-          setTopicResults(fetched);
-        } 
-
-        console.log(fetched);
-
-      } catch (error) {
-        // TODO: set error handling, propagate it up
-        throw error;
-      }
+      if (query.page && query.page > 0) {
+        // append the topics
+        setTopicResults({
+          total: fetched.total,
+          results: [...prevTopicResults.results, ...fetched.results],
+        });
+      } else {
+        // replace the topics if it's the first page
+        setTopicResults(fetched);
+      } 
     }, 
   []);
 

@@ -33,7 +33,6 @@ export default function Page() {
 
   const searchWithQuery = useDebouncedCallback(
     async (prevArticleResults: Results<ArticleResult>, query: ArticleQuery) => {
-      console.log("fetching articles", query);
       
       if (
         // semantic search doesn't take paging into account, always returns the K first results
@@ -58,21 +57,12 @@ export default function Page() {
           // replace the articles
           setArticleResults(fetched);
         } 
-
-      } catch (error) {
-        // TODO: set error handling, propagate it up
-        throw error;
       } finally {
         setLoading(false);
       }
     }, 
     500,
   );
-
-  // debug
-  useEffect(() => {
-    console.log(articleQuery)
-  }, [articleQuery])
 
 
   useEffect(() => {

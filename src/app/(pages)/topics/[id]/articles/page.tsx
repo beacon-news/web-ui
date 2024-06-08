@@ -13,8 +13,6 @@ export default async function Page(
   },
 }) {
 
-  // TODO: add error handling
-
   const topicResults = await searchTopics({
     ids: [params.id],
     page: 0,

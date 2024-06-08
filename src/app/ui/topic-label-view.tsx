@@ -30,30 +30,14 @@ export default function TopicsLabelView({
           className="p-4 bg-slate-200 mb-4 rounded-md text-center flex flex-col items-center gap-y-2 
           hover:cursor-pointer hover:bg-slate-300"
           style={{
-            // flex: `${1 + topic.normalizedCount! * 9} 1 ${5 + topic.normalizedCount! * 95}%`,
-            // minWidth: `${100 + topic.normalizedCount! * 350}px`,
-            // minWidth: `${12 + topic.normalizedCount! * 30}rem`,
-
             width: `${10 + topic.normalizedCount! * 90}%`,
             height: `${10 + topic.normalizedCount! * 70}%`,
             minWidth: `${12 + topic.normalizedCount! * topics.length}rem`,
-
-            // width: `${10 + topic.normalizedCount! * topics.length}%`,
-            // height: `${10 + topic.normalizedCount! * topics.length}%`,
-            // backgroundColor: generateColor(topic.batch_id),
-
-            // width: `20%`,
-            // height: `10%`,
-            // minWidth: `3 rem`,
-            // backgroundColor: `hsl(120, ${topic.normalizedCount! * 100}%, ${60 + topic.normalizedCount! * 40}%)`,
           }}
         >
             <p
               style={{
-                // fontSize: `${topic.count! * 0.8}px`,
-                // fontSize: `${0.5 + topic.normalizedCount! * 9}rem`,
                 fontSize: `${0.4 + topic.normalizedCount! * 7}em`,
-                // fontSize: `${0.4 + topic.normalizedCount! * topics.length}em`,
               }}
             >{topic.topic}</p>
           <p className="text-sm text-gray-600 mt-4">{topic.count} articles</p>
@@ -64,6 +48,8 @@ export default function TopicsLabelView({
 }
 
 
+// given a list 1,2,3,4,5,6,7
+// sorts the items like 1,3,5,7,2,4,6
 function middleSort(array: any[], compareFn?: (a: any, b: any) => number) {
 
   const sorted = Array.from(array);

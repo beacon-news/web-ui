@@ -40,8 +40,6 @@ async function searchCategories(query: CategoryQuery): Promise<Results<CategoryR
 }
 
 export default async function fetchCategories(): Promise<Results<CategoryResult>> {
-
-  // TODO: actually fetch all categories using paginated requests, instead of just 30
   const query: CategoryQuery = {
     page: 0,
     page_size: 30,

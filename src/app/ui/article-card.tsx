@@ -1,4 +1,3 @@
-// TODO: see which components or which parts could be left as server side components
 "use client";
 
 import React, { useState } from 'react';
@@ -6,7 +5,6 @@ import { ArticleCategory, ArticleResult, ArticleTopic } from '../lib/models/arti
 import Tags from './tags';
 import { useRouter } from 'next/navigation';
 import { ChevronDown, ChevronUp } from './chevrons';
-import Image from 'next/image';
 
 export default function ArticleCard(
 { 

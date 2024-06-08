@@ -40,12 +40,6 @@ export default function Page() {
             // replace the batches
             setTopicBatchResults(fetched);
           } 
-
-          console.log(fetched);
-
-        } catch (error) {
-          // TODO: set error handling, propagate it up
-          throw error;
         } finally {
           setLoading(false);
         }
@@ -62,9 +56,6 @@ export default function Page() {
     });
   }, []);
 
-  useEffect(() => {
-    console.log(topicBatchQuery)
-  }, [topicBatchQuery])
 
   const loadNextBatch = () => {
     // don't load more if there is nothing more to load

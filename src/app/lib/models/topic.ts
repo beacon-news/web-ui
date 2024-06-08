@@ -1,4 +1,4 @@
-// TODO: change publish_date to camelCase and create a DTO for the snake_case json?
+// TODO: create a DTO for the snake_case json and a camelCase object for the model?
 
 import { TopicBatchArticleQuery } from "./topic-batch";
 
@@ -11,7 +11,6 @@ export interface TopicResult {
   representative_articles: TopicArticle[]; 
 }
 
-// TODO: change author and title to be strings
 export interface TopicArticle {
   id: string;
   url: string;

@@ -35,7 +35,8 @@ export default function ArticleSearchBar({
   })
 
   // update chosen categories with the ones coming from the parent
-  // TODO: redundant a bit, because chosenCategories also gets updated when the input changes
+  // needed when an external component wants to update categories in this component
+  // TODO: a bit redundant, because chosenCategories also gets updated when the input changes
   useEffect(() => {
     const newChosenCategories = {...chosenCategories};
     for (const cat of articleQuery.categories?.split(' ') ?? []) {

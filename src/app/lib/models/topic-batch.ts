@@ -1,4 +1,4 @@
-// TODO: change publish_date to camelCase and create a DTO for the snake_case json?
+// TODO: create a DTO for the snake_case json and a camelCase object for the model?
 
 export interface TopicBatchArticleQuery {
   publish_date: {

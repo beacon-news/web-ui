@@ -41,12 +41,6 @@ export default function Page() {
             // replace the topics
             setTopicResults(fetched);
           } 
-
-          console.log(fetched);
-
-        } catch (error) {
-          // TODO: set error handling, propagate it up
-          throw error;
         } finally {
           setLoading(false);
         }
@@ -63,9 +57,6 @@ export default function Page() {
     });
   }, [])
 
-  useEffect(() => {
-    console.log(topicQuery)
-  }, [topicQuery])
 
   const setTopicQueryAndSearch = (query: TopicQuery) => {
     setTopicQuery(query);
@@ -73,8 +64,8 @@ export default function Page() {
   }
 
   const loadNextTopics = () => {
-    // don't load more if there's nothing more to load
     if (topicResults.total <= topicResults.results.length) {
+      // there is nothing more to load
       return;
     }
     searchWithQuery(topicResults, topicQuery);
