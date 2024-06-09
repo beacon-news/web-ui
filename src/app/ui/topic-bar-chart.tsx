@@ -30,13 +30,14 @@ export default function TopicsBarChart({
 }) {
 
   const createChartData = useCallback((topics: TopicResult[]) => {
+    const sorted = [...topics].sort((a, b) => b.count! - a.count!);
     return {
       // take only the first 3 words from the topic representation
-      labels: topics.map(topic => topic.topic!.split(' ').slice(0, 3).join(' ')),
+      labels: sorted.map(topic => topic.topic!.split(' ').slice(0, 3).join(' ')),
       datasets: [
         {
           label: `Article Count`,
-          data: topics.map(topic => topic.count!),
+          data: sorted.map(topic => topic.count!),
           borderColor: 'rgb(255, 99, 132)',
           backgroundColor: 'rgba(255, 99, 132, 0.5)',
         },

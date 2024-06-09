@@ -7,18 +7,25 @@ import { ScrollToTop } from "./scroll-to-top";
 import { TopicResult } from "../lib/models/topic";
 import TopicDisplay from "./topic-display";
 import { Results } from "../lib/models/results";
+import TopicBatchFilters from "./topic-filter";
 
 
 export default function TopicList({ 
   loading,
   topicResults,  
+  filteredResults,
   onFetchMorePressed,
   onListEndReached,
+  topicBatchFilters,
+  toggleBatchFilter,
  } : { 
   loading: boolean,
   topicResults: Results<TopicResult>,
+  filteredResults: Results<TopicResult>,
   onFetchMorePressed: () => void,
   onListEndReached: () => void,
+  topicBatchFilters: Set<string>,
+  toggleBatchFilter: (batchId: string) => void,
 }) {
   
   const {ref, inView} = useInView();
@@ -35,9 +42,14 @@ export default function TopicList({
       {topicResults.total > 0 ? 
         <>
           <div className="flex flex-col items-center sm:flex-row sm:justify-between w-full">
-            <p className="text-md text-gray-500 text-left px-4">
-              Fetched top {topicResults.results.length}/{topicResults.total} topics
-            </p>
+            <div className="flex flex-col items-center justify-between">
+              <p className="text-md text-gray-500 text-left px-4">
+                Fetched top {topicResults.results.length}/{topicResults.total} topics
+              </p>
+              <p className="text-md text-gray-500 text-left px-4">
+                Showing {filteredResults.results.length}/{topicResults.results.length} topics
+              </p>
+            </div>
             {topicResults.total > topicResults.results.length ?
               <button 
                 className="text-md text-gray-500 px-2 py-1 rounded-md bg-gray-300 hover:bg-blue-500 hover:text-white"
@@ -49,9 +61,14 @@ export default function TopicList({
               >No more elements to fetch.</p>
             }
           </div>
+          <TopicBatchFilters 
+            topicResults={topicResults}
+            topicBatchFilters={topicBatchFilters}
+            onFilterPressed={toggleBatchFilter}
+          />
           {
             <TopicDisplay
-              topics={topicResults.results} 
+              topics={filteredResults.results} 
             />
           }
           <ScrollToTop />

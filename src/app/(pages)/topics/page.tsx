@@ -7,6 +7,7 @@ import TopicSearchBar from "@/app/ui/topic-search-bar";
 import TopicList from "@/app/ui/topic-list";
 import { Results } from "@/app/lib/models/results";
 import { TopicResult } from "@/app/lib/models/topic";
+import TopicBatchFilters from "@/app/ui/topic-filter";
 
 
 export default function Page() {
@@ -20,6 +21,13 @@ export default function Page() {
     page: 0,
     page_size: 10,
   });
+
+  const [filteredTopicResults, setFilteredTopicResults] = useState<Results<TopicResult>>({
+    total: 0,
+    results: [],
+  });
+  const [topicBatchFilters, setTopicBatchFilters] = useState<Set<string>>(new Set());
+  const [topicsGroupedByBatch, setTopicsGroupedByBatch] = useState<{[batchId: string]: TopicResult[]}>({});
 
   const [loading, setLoading] = useState(true);
 
@@ -57,7 +65,6 @@ export default function Page() {
     });
   }, [])
 
-
   const setTopicQueryAndSearch = (query: TopicQuery) => {
     setTopicQuery(query);
     searchWithQuery(topicResults, query);
@@ -75,6 +82,32 @@ export default function Page() {
     });
   }
 
+  // get topic batch ids for filtering topics based on their batches
+  useEffect(() => {
+    const grouped = Object.groupBy(topicResults.results, topic => topic.batch_id!);
+    setTopicsGroupedByBatch(grouped as {[batchId: string]: TopicResult[]});
+    setTopicBatchFilters(new Set(Object.keys(grouped)));
+  }, [topicResults]);
+
+  // filter topics based on the selected batches
+  useEffect(() => {
+    setFilteredTopicResults({
+      ...topicResults,
+      results: topicResults.results.filter(topic => topicBatchFilters.has(topic.batch_id!)),
+    });
+  }, [topicBatchFilters]);
+
+  const toggleBatchFilter = (batchId: string) => {
+    if (topicBatchFilters.has(batchId)) {
+      console.log("remove")
+      topicBatchFilters.delete(batchId);
+    } else {
+      console.log("add")
+      topicBatchFilters.add(batchId);
+    }
+    setTopicBatchFilters(new Set(topicBatchFilters));
+  }
+
   return (
     <div className="w-full h-full flex flex-col items-center">
       <TopicSearchBar
@@ -85,8 +118,11 @@ export default function Page() {
       <TopicList 
         loading={loading}
         topicResults={topicResults}
+        filteredResults={filteredTopicResults}
         onFetchMorePressed={loadNextTopics}
         onListEndReached={loadNextTopics}
+        topicBatchFilters={topicBatchFilters}
+        toggleBatchFilter={toggleBatchFilter}
       />
     </div>
   );
