@@ -27,7 +27,7 @@ export default function TopicBatchFilters({
         onClick={() => setListToggled(!listToggled)}>{listToggled ? "Close" : "Show"} date filters</button>
       </div>
       {listToggled &&
-        <ul className="mt-2 p-2 flex flex-col items-center gap-y-1">
+        <ul className="p-2 flex flex-col items-center gap-y-1">
           {Object.keys(groupedTopics).map(key => (
             <div key={key}
               className="flex gap-x-2 hover:cursor-pointer" 
