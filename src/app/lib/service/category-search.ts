@@ -24,7 +24,7 @@ async function searchCategories(query: CategoryQuery): Promise<Results<CategoryR
 
   const params = urlSearchParamsFromObject(queryObject);
 
-  const res = await fetch(`http://${SEARCH_API_URL}/api/v1/search/categories?${params.toString()}`, {
+  const res = await fetch(`${SEARCH_API_URL}/api/v1/search/categories?${params.toString()}`, {
     method: 'GET',
   })
 

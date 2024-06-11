@@ -9,7 +9,7 @@ export default async function searchArticles(query: ArticleQuery): Promise<Resul
 
   const params = urlSearchParamsFromObject(query);
 
-  const res = await fetch(`http://${SEARCH_API_URL}/api/v1/search/articles?${params.toString()}`, {
+  const res = await fetch(`${SEARCH_API_URL}/api/v1/search/articles?${params.toString()}`, {
     method: 'GET',
   })
 

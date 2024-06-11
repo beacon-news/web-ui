@@ -9,7 +9,7 @@ export default async function searchTopicBatches(query: TopicBatchQuery): Promis
 
   const params = urlSearchParamsFromObject(query);
 
-  const res = await fetch(`http://${SEARCH_API_URL}/api/v1/search/topic-batches?${params.toString()}`, {
+  const res = await fetch(`${SEARCH_API_URL}/api/v1/search/topic-batches?${params.toString()}`, {
     method: 'GET',
   })
 

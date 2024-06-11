@@ -11,7 +11,7 @@ export default async function searchTopics(query: TopicQuery): Promise<Results<T
 
   const params = urlSearchParamsFromObject(query);
 
-  const res = await fetch(`http://${SEARCH_API_URL}/api/v1/search/topics?${params.toString()}`, {
+  const res = await fetch(`${SEARCH_API_URL}/api/v1/search/topics?${params.toString()}`, {
     method: 'GET',
   })
 
