@@ -15,10 +15,12 @@ export default function ArticlesDisplay({
   onListEndReached,
   onCategoryClicked,
   onTopicClicked,
+  isSemanticQuery = false,
  } : { 
   articleCountText: string | undefined,
   articleResults: Results<ArticleResult>,
   loading: boolean,
+  isSemanticQuery?: boolean,
   onListEndReached: () => void,
   onCategoryClicked?: (category: ArticleCategory) => void,
   onTopicClicked?: (topic: ArticleTopic) => void,
@@ -47,8 +49,12 @@ export default function ArticlesDisplay({
               onTopicClicked={onTopicClicked}
             />
 
-            {/* show loading element if there are more articles to load */}
-            {articleResults.total > articleResults.results.length ?
+            {/* 
+              Show loading element if there are more articles to load, 
+              but only if the query is not semantic.
+              Semantic search doesn't support pagination so don't show the loading element.
+            */}
+            {articleResults.total > articleResults.results.length && !isSemanticQuery ?
               <div className="mt-6 p-12 flex flex-col items-center gap-4 text-lg text-gray-600">
                 <Spinner />
                 <div ref={ref}>Loading</div>

@@ -38,6 +38,7 @@ export default function Page() {
         // semantic search doesn't take paging into account, always returns the K first results
         (query.search_type === "combined" || query.search_type === "semantic") && query.page! > 0
       ) {
+        console.log("skipping paging for semantic search")
         setLoading(false);
         return;
       }
@@ -153,6 +154,7 @@ export default function Page() {
         articleCountText={makeArticleCountText()}
         articleResults={articleResults} 
         loading={loading}
+        isSemanticQuery={articleQuery.search_type === "semantic" || articleQuery.search_type === "combined"}
         onListEndReached={loadMoreArticles}
         onCategoryClicked={onCategoryClicked}
         onTopicClicked={navigateToTopicArticles}
