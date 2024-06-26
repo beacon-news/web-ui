@@ -41,7 +41,7 @@ export default function TopicBatchList({
           }
           <ScrollToTop />
           
-          {/* show loading element if there are more articles to load */}
+          {/* show loading element if there are more batches to load */}
           {batchResults.total > batchResults.results.length ?
             <div className="mt-6 p-12 flex flex-col items-center gap-4 text-lg text-gray-600">
               <Spinner />

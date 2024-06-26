@@ -30,6 +30,7 @@ export default function TopicBatchDisplay({
   });
 
   const [topicQuery, setTopicQuery] = useState<TopicQuery>({
+    batch_ids: [topicBatchResult.id!],
     page: 0,
     page_size: 10,
   });
